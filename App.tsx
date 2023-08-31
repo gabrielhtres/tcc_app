@@ -6,34 +6,43 @@
  */
 
 import React from 'react';
-import { SafeAreaView, useColorScheme } from 'react-native';
-
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import SignIn from './src/screens/SignIn';
 import SignUp from './src/screens/SignUp';
 import {
   MD3LightTheme as DefaultTheme,
+  MD3Theme,
   PaperProvider,
 } from 'react-native-paper';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
+import ListAnalysis from './src/screens/Analysis/List';
+import { MD3Colors } from 'react-native-paper/lib/typescript/types';
+import AddEditAnalysis from './src/screens/Analysis/AddEdit';
+
+interface MyColors extends MD3Colors {
+  primaryText: string;
+}
+
+export interface MyTheme extends MD3Theme {
+  colors: MyColors;
+}
 
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  // const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    flex: 1,
-  };
+  // const backgroundStyle = {
+  //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  //   flex: 1,
+  // };
 
-  const theme = {
+  const theme: MyTheme = {
     ...DefaultTheme,
-
-    myOwnProperty: true,
 
     colors: {
       ...DefaultTheme.colors,
       primary: '#219653',
+      secondary: '#27AE60',
+      tertiary: '#6FCF97',
       primaryText: '#FFFFFF',
     },
   };
@@ -43,11 +52,7 @@ function App(): JSX.Element {
   return (
     <NavigationContainer>
       <PaperProvider theme={theme}>
-        {/* <SafeAreaView style={backgroundStyle}> */}
-        <Stack.Navigator>
-          {/* <ScrollView
-              contentInsetAdjustmentBehavior="automatic"
-              style={backgroundStyle}> */}
+        <Stack.Navigator initialRouteName="SignIn">
           <Stack.Screen
             name="SignIn"
             component={SignIn}
@@ -58,10 +63,17 @@ function App(): JSX.Element {
             component={SignUp}
             options={{ headerShown: false }}
           />
-          {/* <SignUp /> */}
-          {/* </ScrollView> */}
+          <Stack.Screen
+            name="ListAnalysis"
+            component={ListAnalysis}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="AddEditAnalysis"
+            component={AddEditAnalysis}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
-        {/* </SafeAreaView> */}
       </PaperProvider>
     </NavigationContainer>
   );

@@ -1,9 +1,12 @@
 import { View, Image } from 'react-native';
 import { Button, Text, TextInput, useTheme } from 'react-native-paper';
 import styles from '../SignIn/styles';
+import { useNavigation } from '@react-navigation/native';
+import { MyTheme } from '../../../App';
 
-function SignIn({ navigation }) {
-  const theme = useTheme();
+function SignUp() {
+  const theme: MyTheme = useTheme();
+  const navigation = useNavigation();
 
   return (
     <View
@@ -30,4 +33,4 @@ function SignIn({ navigation }) {
   );
 }
 
-export default SignIn;
+export default SignUp;
