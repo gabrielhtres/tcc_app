@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
     width,
     height,
     display: 'flex',
-    // justifyContent: 'center',
     alignItems: 'center',
   },
   logo: {
@@ -29,9 +28,19 @@ const styles = StyleSheet.create({
     height: height * 0.06,
     display: 'flex',
     justifyContent: 'center',
-    marginBottom: width * 0.05,
   },
   link: { fontSize: 15 },
+  iconPassword: {
+    position: 'relative',
+    right: 2,
+    // top: height * 0.5,
+    backgroundColor: 'red',
+  },
+  errorContainer: {
+    width: width * 0.8,
+    marginTop: -(width * 0.04),
+    color: 'red',
+  },
 });
 
 export default styles;

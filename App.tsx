@@ -18,9 +18,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import ListAnalysis from './src/screens/Analysis/List';
 import { MD3Colors } from 'react-native-paper/lib/typescript/types';
 import AddEditAnalysis from './src/screens/Analysis/AddEdit';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 interface MyColors extends MD3Colors {
   primaryText: string;
+  errorColor: string;
 }
 
 export interface MyTheme extends MD3Theme {
@@ -44,6 +46,7 @@ function App(): JSX.Element {
       secondary: '#27AE60',
       tertiary: '#6FCF97',
       primaryText: '#FFFFFF',
+      errorColor: '#B3271C',
     },
   };
 
