@@ -4,13 +4,14 @@ import { Button, Text, TextInput, useTheme } from 'react-native-paper';
 import styles from './styles';
 import { MyTheme } from '../../../App';
 import { maskCPF } from '../../utils/textMasks';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+// import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import TextError from '../../components/TextError';
-import {
-  GestureHandlerRootView,
-  TouchableWithoutFeedback,
-} from 'react-native-gesture-handler';
+import api from '../../utils/api';
+// import {
+//   GestureHandlerRootView,
+//   TouchableWithoutFeedback,
+// } from 'react-native-gesture-handler';
 
 interface Props {
   navigation: any;
@@ -19,16 +20,36 @@ interface Props {
 function SignIn({ navigation }: Props) {
   const theme: MyTheme = useTheme();
   const [cpf, setCpf] = useState<string>('');
-  const [error, setError] = useState<boolean>(false);
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [cpfError, setCpfError] = useState<boolean>(false);
+  const [password, setPassword] = useState<string>('');
+  const [passwordError, setPasswordError] = useState<boolean>(false);
+  // const [hidePassword, setHideassword] = useState<boolean>(false);
 
   const validateFields = () => {
-    if (cpf.length < 14) {
-      setError(true);
-      return;
+    let haveError = false;
+    // if (cpf.length < 14) {
+    //   setCpfError(true);
+    //   haveError = true;
+    // }
+
+    if (password.length === 0) {
+      setPasswordError(true);
+      haveError = true;
     }
 
-    setError(false);
+    if (haveError) {
+      return false;
+    }
+
+    setCpfError(false);
+    setPasswordError(false);
+
+    api
+      .post('/signin', { email: cpf, password })
+      .then(res => console.log(res))
+      .catch(err => console.log('erro', err.message));
+
+    return true;
   };
 
   return (
@@ -39,40 +60,57 @@ function SignIn({ navigation }: Props) {
       <TextInput
         label="CPF"
         mode="outlined"
-        keyboardType="numeric"
+        // keyboardType="numeric"
         style={styles.input}
         value={cpf}
         onChangeText={e => {
-          setCpf(maskCPF(e));
-          setError(false);
+          // setCpf(maskCPF(e));
+          setCpf(e);
+          setCpfError(false);
         }}
         maxLength={14}
-        error={error}
+        error={cpfError}
       />
-      {error && (
+      {cpfError && (
         <TextError errorMessage="CPF inválido" style={styles.errorContainer} />
       )}
       <TextInput
         label="Senha"
         mode="outlined"
         style={styles.input}
-        secureTextEntry={showPassword}
+        value={password}
+        secureTextEntry={false}
+        onChangeText={e => {
+          console.log('password', e);
+          setPassword(e);
+          setPasswordError(false);
+        }}
+        error={passwordError}
       />
-      <GestureHandlerRootView>
+      {passwordError && (
+        <TextError
+          errorMessage="A senha deve estar preenchida"
+          style={styles.errorContainer}
+        />
+      )}
+      {/* <GestureHandlerRootView>
         <TouchableWithoutFeedback
           style={styles.iconPassword}
           onPress={() => setShowPassword(!showPassword)}>
           <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
         </TouchableWithoutFeedback>
-      </GestureHandlerRootView>
+      </GestureHandlerRootView> */}
       <Button
         mode="contained-tonal"
         buttonColor={theme.colors.primary}
         textColor={theme.colors.primaryText}
         style={styles.button}
-        onPress={() =>
-          /*navigation.navigate('ListAnalysis')*/ validateFields()
-        }>
+        onPress={() => {
+          // if (validateFields()) {
+          //   navigation.replace('ListAnalysis');
+          // }
+          validateFields();
+        }}>
         ENTRAR
       </Button>
     </View>
