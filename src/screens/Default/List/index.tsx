@@ -22,6 +22,7 @@ interface Props {
 function DefaultListScreen({ menuTitle, screenTitle, list }: Props) {
   // const { width, height } = Dimensions.get('window');
   // const theme: MyTheme = useTheme();
+  console.log('list', list);
 
   const [showMenu, setShowMenu] = useState(false);
 

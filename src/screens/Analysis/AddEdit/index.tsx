@@ -5,7 +5,7 @@ import { CommonActions } from '@react-navigation/native';
 import styles from './styles';
 import DefaultFloatButton from '../../../components/DefaultFloatButton';
 
-function ListAnalysis({ navigation }: any) {
+function AddEditAnalysis({ navigation }: any) {
   useEffect(() => {
     console.log('veio aq');
   }, []);
@@ -54,4 +54,4 @@ function ListAnalysis({ navigation }: any) {
   );
 }
 
-export default ListAnalysis;
+export default AddEditAnalysis;
