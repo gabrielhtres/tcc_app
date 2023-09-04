@@ -2,7 +2,7 @@ import { Text } from 'react-native-paper';
 import DefaultAddEditScreen from '../../Default/AddEdit';
 import SaveButton from '../../../components/SaveButton';
 
-function ListAnalysis({ navigation }: any) {
+function AddEditAnalysis({ navigation }: any) {
   return (
     <>
       <DefaultAddEditScreen
@@ -21,4 +21,4 @@ function ListAnalysis({ navigation }: any) {
   );
 }
 
-export default ListAnalysis;
+export default AddEditAnalysis;

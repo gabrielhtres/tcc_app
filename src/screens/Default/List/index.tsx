@@ -18,6 +18,7 @@ interface Props {
 function DefaultListScreen({ menuTitle, screenTitle, list }: Props) {
   // const { width, height } = Dimensions.get('window');
   // const theme: MyTheme = useTheme();
+  console.log('list', list);
 
   const [showMenu, setShowMenu] = useState(false);
 
@@ -29,8 +30,8 @@ function DefaultListScreen({ menuTitle, screenTitle, list }: Props) {
 
       <Text style={styles.title}>{menuTitle}</Text>
 
-      {list.length > 0 ? (
-        list.map(item => <ListItem title={item.title} key={item.id} />)
+      {list && list.length > 0 ? (
+        list.map(item => <ListItem title={item.name} key={item.id} />)
       ) : (
         <EmptyList />
       )}

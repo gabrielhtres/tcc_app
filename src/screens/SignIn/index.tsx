@@ -8,6 +8,7 @@ import { maskCPF } from '../../utils/textMasks';
 // import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import TextError from '../../components/TextError';
 import api from '../../utils/api';
+import { saveStorageData } from '../../utils/storageService';
 // import {
 //   GestureHandlerRootView,
 //   TouchableWithoutFeedback,
@@ -25,6 +26,20 @@ function SignIn({ navigation }: Props) {
   const [passwordError, setPasswordError] = useState<boolean>(false);
   // const [hidePassword, setHideassword] = useState<boolean>(false);
 
+  const makeSignIn = () => {
+    api
+      .post('/signin', { email: cpf, password })
+      .then(res => {
+        if (res.data.token && res.data.refreshToken) {
+          // console.log(res.data.token, res.data.refreshToken)
+          saveStorageData('jwtToken', res.data.token);
+          saveStorageData('jwtRefreshToken', res.data.refreshToken);
+          navigation.navigate('ListAnalysis');
+        }
+      })
+      .catch(err => console.log('erro', err.message));
+  };
+
   const validateFields = () => {
     let haveError = false;
     // if (cpf.length < 14) {
@@ -37,18 +52,21 @@ function SignIn({ navigation }: Props) {
       haveError = true;
     }
 
+    if (cpf.length === 0) {
+      setCpfError(true);
+      haveError = true;
+    }
+
     if (haveError) {
       return false;
     }
+    
 
     setCpfError(false);
     setPasswordError(false);
-
-    api
-      .post('/signin', { email: cpf, password })
-      .then(res => console.log(res))
-      .catch(err => console.log('erro', err.message));
-
+    
+    makeSignIn();
+  
     return true;
   };
 
@@ -81,7 +99,7 @@ function SignIn({ navigation }: Props) {
         value={password}
         secureTextEntry={false}
         onChangeText={e => {
-          console.log('password', e);
+          // console.log('password', e);
           setPassword(e);
           setPasswordError(false);
         }}
@@ -89,7 +107,7 @@ function SignIn({ navigation }: Props) {
       />
       {passwordError && (
         <TextError
-          errorMessage="A senha deve estar preenchida"
+          errorMessage="Senha inválida"
           style={styles.errorContainer}
         />
       )}
