@@ -1,22 +1,55 @@
-import { Text } from 'react-native-paper';
 import DefaultAddEditScreen from '../../Default/AddEdit';
-import SaveButton from '../../../components/SaveButton';
+import { TextInput } from 'react-native-paper';
+import { useEffect } from 'react';
+import { CommonActions } from '@react-navigation/native';
+import styles from './styles';
+import DefaultFloatButton from '../../../components/DefaultFloatButton';
 
 function ListAnalysis({ navigation }: any) {
+  useEffect(() => {
+    console.log('veio aq');
+  }, []);
+
   return (
     <>
       <DefaultAddEditScreen
-        menuTitle="Adicionar Talhão na Análise 1"
+        menuTitle="Adicionar Análise"
         screenTitle="Análises"
         fields={
           <>
-            <Text>Input 1</Text>
-            <Text>Input 1</Text>
+            <TextInput mode="outlined" label="Título" style={styles.input} />
+            <TextInput
+              mode="outlined"
+              label="Descrição"
+              multiline
+              numberOfLines={7}
+              style={styles.input}
+            />
           </>
         }
         edit="edit"
       />
-      <SaveButton onPress={() => navigation.navigate('ListAnalysis')} />
+      {/* <SaveButton
+        onPress={() =>
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: 'ListAnalysis' }],
+            }),
+          )
+        }
+      /> */}
+      <DefaultFloatButton
+        onPress={() =>
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: 'ListAnalysis' }],
+            }),
+          )
+        }
+        type="save"
+      />
     </>
   );
 }

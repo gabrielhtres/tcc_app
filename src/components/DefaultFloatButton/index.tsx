@@ -1,4 +1,4 @@
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faFloppyDisk, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import styles from './styles';
 
@@ -12,9 +12,10 @@ import { useTheme } from 'react-native-paper';
 
 interface Props {
   onPress: () => void;
+  type: 'save' | 'add';
 }
 
-function FloatAddButton({ onPress }: Props) {
+function DefaultFloatButton({ onPress, type }: Props) {
   const theme: MyTheme = useTheme();
 
   return (
@@ -22,11 +23,14 @@ function FloatAddButton({ onPress }: Props) {
       style={{ ...styles.container, backgroundColor: theme.colors.primary }}>
       <GestureHandlerRootView>
         <TouchableOpacity style={styles.button} onPress={onPress}>
-          <FontAwesomeIcon icon={faPlus} color="white" />
+          {type === 'add' && <FontAwesomeIcon icon={faPlus} color="white" />}
+          {type === 'save' && (
+            <FontAwesomeIcon icon={faFloppyDisk} color="white" />
+          )}
         </TouchableOpacity>
       </GestureHandlerRootView>
     </View>
   );
 }
 
-export default FloatAddButton;
+export default DefaultFloatButton;

@@ -1,5 +1,5 @@
 import DefaultListScreen from '../../Default/List';
-import FloatAddButton from '../../../components/FloatAddButton';
+import DefaultFloatButton from '../../../components/DefaultFloatButton';
 
 function AddEditAnalysis({ navigation }: any) {
   return (
@@ -20,9 +20,72 @@ function AddEditAnalysis({ navigation }: any) {
             id: 3,
             title: 'Análise 3',
           },
+          {
+            id: 11,
+            title: 'Análise 1',
+          },
+          {
+            id: 21,
+            title: 'Análise 2',
+          },
+          {
+            id: 31,
+            title: 'Análise 3',
+          },
+          {
+            id: 12,
+            title: 'Análise 1',
+          },
+          {
+            id: 22,
+            title: 'Análise 2',
+          },
+          {
+            id: 32,
+            title: 'Análise 3',
+          },
+          {
+            id: 13,
+            title: 'Análise 1',
+          },
+          {
+            id: 23,
+            title: 'Análise 2',
+          },
+          {
+            id: 33,
+            title: 'Análise 3',
+          },
+          {
+            id: 14,
+            title: 'Análise 1',
+          },
+          {
+            id: 24,
+            title: 'Análise 2',
+          },
+          {
+            id: 34,
+            title: 'Análise 3',
+          },
+          {
+            id: 15,
+            title: 'Análise 1',
+          },
+          {
+            id: 25,
+            title: 'Análise 2',
+          },
+          {
+            id: 35,
+            title: 'Análise 3',
+          },
         ]}
       />
-      <FloatAddButton onPress={() => navigation.navigate('AddEditAnalysis')} />
+      <DefaultFloatButton
+        onPress={() => navigation.navigate('AddEditAnalysis')}
+        type="add"
+      />
     </>
   );
 }

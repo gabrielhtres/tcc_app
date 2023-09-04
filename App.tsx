@@ -18,7 +18,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import ListAnalysis from './src/screens/Analysis/List';
 import { MD3Colors } from 'react-native-paper/lib/typescript/types';
 import AddEditAnalysis from './src/screens/Analysis/AddEdit';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+// import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 interface MyColors extends MD3Colors {
   primaryText: string;
@@ -55,7 +55,7 @@ function App(): JSX.Element {
   return (
     <NavigationContainer>
       <PaperProvider theme={theme}>
-        <Stack.Navigator initialRouteName="SignIn">
+        <Stack.Navigator initialRouteName="ListAnalysis">
           <Stack.Screen
             name="SignIn"
             component={SignIn}
