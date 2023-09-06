@@ -46,6 +46,8 @@ function App(): JSX.Element {
       tertiary: '#6FCF97',
       primaryText: '#FFFFFF',
       errorColor: '#B3271C',
+      background: '#FFF',
+      backdrop: '#FFF',
     },
   };
 

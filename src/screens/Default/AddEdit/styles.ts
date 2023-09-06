@@ -1,6 +1,6 @@
 import { Dimensions, StyleSheet } from 'react-native';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   button: {
@@ -11,9 +11,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   fieldsContainer: {
+    backgroundColor: '#FFF',
     marginTop: width * 0.03,
     paddingRight: width * 0.05,
     paddingLeft: width * 0.05,
+    minHeight: height * 0.9,
   },
 });
 

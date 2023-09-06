@@ -1,6 +1,6 @@
 import { Dimensions, StyleSheet } from 'react-native';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   title: {
@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     marginBottom: 20,
+    minHeight: height * 0.8,
   },
 });
 

@@ -13,12 +13,13 @@ import { useTheme } from 'react-native-paper';
 interface Props {
   onPress: () => void;
   type: 'save' | 'add';
+  isView?: boolean;
 }
 
-function DefaultFloatButton({ onPress, type }: Props) {
+function DefaultFloatButton({ onPress, type, isView }: Props) {
   const theme: MyTheme = useTheme();
 
-  return (
+  return !isView ? (
     <View
       style={{ ...styles.container, backgroundColor: theme.colors.primary }}>
       <GestureHandlerRootView>
@@ -30,7 +31,7 @@ function DefaultFloatButton({ onPress, type }: Props) {
         </TouchableOpacity>
       </GestureHandlerRootView>
     </View>
-  );
+  ) : null;
 }
 
 export default DefaultFloatButton;

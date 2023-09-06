@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { getStorageData } from '../utils/storageService';
-// import Config from 'react-native-config';
 
 const getToken = async () => {
   const token = await getStorageData('jwtToken');
@@ -8,7 +7,7 @@ const getToken = async () => {
 };
 
 const api = axios.create({
-  baseURL: 'http://192.168.0.100:3030',
+  baseURL: 'http://192.168.1.155:3030',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',

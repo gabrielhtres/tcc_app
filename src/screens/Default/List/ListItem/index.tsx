@@ -9,10 +9,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { Dimensions, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import styles from './styles';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import api from '../../../../utils/api';
+import { MyTheme } from '../../../../../App';
 
 interface Props {
   id: number;
@@ -32,6 +33,7 @@ function ListItem({
   navigation,
 }: Props) {
   const { width } = Dimensions.get('window');
+  const theme: MyTheme = useTheme();
 
   const icons = {
     1: (
@@ -61,7 +63,11 @@ function ListItem({
   };
 
   const handleEdit = () => {
-    navigation.navigate(screen, { editId: id });
+    navigation.navigate(screen, { editId: id, isView: false });
+  };
+
+  const handleView = () => {
+    navigation.navigate(screen, { editId: id, isView: true });
   };
 
   const handleRemove = async () => {
@@ -70,7 +76,9 @@ function ListItem({
   };
 
   return (
-    <View style={styles.container} key={id}>
+    <View
+      style={{ ...styles.container, backgroundColor: theme.colors.background }}
+      key={id}>
       <View style={styles.leftContainer}>
         {icons[statusId as 1 | 2 | 3]}
         <Text style={styles.title}>{title}</Text>
@@ -84,7 +92,7 @@ function ListItem({
             style={styles.icon}
           />
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={handleView}>
           <FontAwesomeIcon
             color="rgba(0, 0, 0, 0.6)"
             icon={faEye}

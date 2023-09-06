@@ -1,6 +1,6 @@
 import DefaultAddEditScreen from '../../Default/AddEdit';
 import { TextInput } from 'react-native-paper';
-import { Fragment, FunctionComponent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CommonActions, useRoute } from '@react-navigation/native';
 import styles from './styles';
 import DefaultFloatButton from '../../../components/DefaultFloatButton';
@@ -23,6 +23,8 @@ function AddEditAnalysis({ navigation }: Props) {
 
   const route = useRoute();
 
+  const { isView } = route.params as any;
+
   useEffect(() => {
     if (route.params) {
       const { editId } = route.params as any;
@@ -42,13 +44,14 @@ function AddEditAnalysis({ navigation }: Props) {
   };
 
   return (
-    <Fragment>
+    <>
       <DefaultAddEditScreen
         menuTitle={route.params ? 'Editar Análise' : 'Adicionar Análise'}
         screenTitle="Análises"
         fields={
           <>
             <TextInput
+              editable={!isView}
               mode="outlined"
               label="Título"
               style={styles.input}
@@ -58,11 +61,11 @@ function AddEditAnalysis({ navigation }: Props) {
               }}
             />
             <TextInput
+              editable={!isView}
               mode="outlined"
               label="Descrição"
               multiline
               numberOfLines={7}
-              style={styles.input}
               value={fieldValues.description}
               onChangeText={text => {
                 setFieldValues({ ...fieldValues, description: text });
@@ -82,6 +85,7 @@ function AddEditAnalysis({ navigation }: Props) {
           }
         /> */}
       <DefaultFloatButton
+        isView={isView}
         onPress={() => {
           submitData();
           navigation.dispatch(
@@ -93,8 +97,8 @@ function AddEditAnalysis({ navigation }: Props) {
         }}
         type="save"
       />
-    </Fragment>
-  ) as unknown as FunctionComponent;
+    </>
+  );
 }
 
 export default AddEditAnalysis;

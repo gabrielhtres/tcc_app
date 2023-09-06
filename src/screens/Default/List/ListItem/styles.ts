@@ -28,6 +28,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    position: 'absolute',
+    right: width * 0.02,
+    top: width * 0.025,
+    backgroundColor: '#FFF',
   },
   icon: { margin: width * 0.025 },
 });

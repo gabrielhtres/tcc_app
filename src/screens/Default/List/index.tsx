@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Text } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import Menu from '../../../components/Menu';
 import styles from './styles';
 import Header from '../../../components/Header';
@@ -9,6 +9,7 @@ import {
   GestureHandlerRootView,
   ScrollView,
 } from 'react-native-gesture-handler';
+import { MyTheme } from '../../../../App';
 
 interface Props {
   menuTitle: string;
@@ -29,15 +30,25 @@ function DefaultListScreen({
 }: Props) {
   const [showMenu, setShowMenu] = useState(false);
 
+  const theme: MyTheme = useTheme();
+
   return (
-    <GestureHandlerRootView>
+    <GestureHandlerRootView
+      style={{ backgroundColor: theme.colors.background }}>
       {showMenu && <Menu />}
 
       <Header screenTitle={screenTitle} setShowMenu={setShowMenu} />
 
-      <Text style={styles.title}>{menuTitle}</Text>
+      <Text
+        style={{ ...styles.title, backgroundColor: theme.colors.background }}>
+        {menuTitle}
+      </Text>
 
-      <ScrollView style={styles.scrollContainer}>
+      <ScrollView
+        style={{
+          ...styles.scrollContainer,
+          backgroundColor: theme.colors.background,
+        }}>
         {list.length > 0 ? (
           list.map(item => (
             <ListItem
