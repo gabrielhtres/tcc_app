@@ -1,39 +1,33 @@
 import DefaultListScreen from '../../Default/List';
 import DefaultFloatButton from '../../../components/DefaultFloatButton';
-import { getStorageData } from '../../../utils/storageService';
 import api from '../../../utils/api';
-import { Text } from 'react-native-paper';
+import { getStorageData } from '../../../utils/storageService';
+import { useEffect, useState } from 'react';
 
 function ListAnalysis({ navigation }: any) {
-  const getAnalysisList = () => {
-    let data: any[] = [];
+  const [analysisList, setAnalysisList] = useState<any[]>([]);
+  const [username, setUsername] = useState<string>('');
 
-    api
-      .get('/analysis/1', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IkdhYnJpZWwiLCJlbWFpbCI6InRlc3RlIiwiaWF0IjoxNjkzNzU1OTcyLCJleHAiOjE2OTM3NTk1NzJ9.glCaEsdezEO8NfPCbkr0NHBz5JyUWNTalrZ8RITeeko',
-        },
-      })
-      .then(res => (data = res.data))
-      .catch(err => console.log('erro', err.message));
-
-    return data;
+  const getAnalysisList = async () => {
+    const name = await getStorageData('name');
+    const res = await api.get('/analysis/list');
+    setAnalysisList(res.data || []);
+    setUsername(name || '');
   };
 
-  // const token = await getStorageData('jwtToken');
-  // const jwtRefreshToken = await getStorageData('jwtRefreshToken');
-
-  // console.log('token', token);
-  // console.log('refreshToken', jwtRefreshToken);
+  useEffect(() => {
+    getAnalysisList();
+  }, []);
 
   return (
     <>
       <DefaultListScreen
-        menuTitle="Bem-vindo de volta, Usuário!"
+        menuTitle={`Bem-vindo de volta, ${username}!`}
         screenTitle="Análises"
-        list={getAnalysisList() || []}
+        list={analysisList}
+        screen="AddEditAnalysis"
+        routeDelete="/analysis"
+        navigation={navigation}
       />
       <DefaultFloatButton
         onPress={() => navigation.navigate('AddEditAnalysis')}

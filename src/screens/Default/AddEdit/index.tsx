@@ -10,13 +10,11 @@ interface Props {
   menuTitle: string;
   screenTitle: string;
   fields: JSX.Element;
-  edit: any;
 }
 
-function DefaultAddEditScreen({ menuTitle, screenTitle, edit, fields }: Props) {
+function DefaultAddEditScreen({ menuTitle, screenTitle, fields }: Props) {
   // const { width, height } = Dimensions.get('window');
   // const theme: MyTheme = useTheme();
-  console.log(edit);
   const [showMenu, setShowMenu] = useState(false);
 
   return (

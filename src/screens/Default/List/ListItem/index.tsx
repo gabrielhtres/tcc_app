@@ -4,22 +4,37 @@ import {
   faHourglassStart,
   faList,
   faPen,
+  faTrash,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { Dimensions, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import styles from './styles';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import api from '../../../../utils/api';
 
 interface Props {
+  id: number;
+  statusId: 1 | 2 | 3;
   title: string;
+  screen: string;
+  routeDelete: string;
+  navigation: any;
 }
 
-function ListItem({ title }: Props) {
+function ListItem({
+  id,
+  title,
+  statusId,
+  screen,
+  routeDelete,
+  navigation,
+}: Props) {
   const { width } = Dimensions.get('window');
 
   const icons = {
-    'Análise 1': (
+    1: (
       <FontAwesomeIcon
         color="orange"
         size={width * 0.05}
@@ -27,15 +42,7 @@ function ListItem({ title }: Props) {
         style={styles.icon}
       />
     ),
-    'Análise 2': (
-      <FontAwesomeIcon
-        color="green"
-        size={width * 0.05}
-        icon={faCheck}
-        style={styles.icon}
-      />
-    ),
-    'Análise 3': (
+    2: (
       <FontAwesomeIcon
         color="red"
         size={width * 0.05}
@@ -43,33 +50,64 @@ function ListItem({ title }: Props) {
         style={styles.icon}
       />
     ),
+    3: (
+      <FontAwesomeIcon
+        color="green"
+        size={width * 0.05}
+        icon={faCheck}
+        style={styles.icon}
+      />
+    ),
+  };
+
+  const handleEdit = () => {
+    navigation.navigate(screen, { editId: id });
+  };
+
+  const handleRemove = async () => {
+    await api.delete(`${routeDelete}/${id}`);
+    navigation.replace('ListAnalysis');
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} key={id}>
       <View style={styles.leftContainer}>
-        {icons[title as keyof icons]}
+        {icons[statusId as 1 | 2 | 3]}
         <Text style={styles.title}>{title}</Text>
       </View>
       <View style={styles.rightContainer}>
-        <FontAwesomeIcon
-          color="rgba(0, 0, 0, 0.6)"
-          icon={faPen}
-          size={width * 0.04}
-          style={styles.icon}
-        />
-        <FontAwesomeIcon
-          color="rgba(0, 0, 0, 0.6)"
-          icon={faEye}
-          size={width * 0.04}
-          style={styles.icon}
-        />
-        <FontAwesomeIcon
-          color="rgba(0, 0, 0, 0.6)"
-          icon={faList}
-          size={width * 0.04}
-          style={styles.icon}
-        />
+        <TouchableWithoutFeedback onPress={handleEdit}>
+          <FontAwesomeIcon
+            color="rgba(0, 0, 0, 0.6)"
+            icon={faPen}
+            size={width * 0.04}
+            style={styles.icon}
+          />
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback>
+          <FontAwesomeIcon
+            color="rgba(0, 0, 0, 0.6)"
+            icon={faEye}
+            size={width * 0.04}
+            style={styles.icon}
+          />
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback>
+          <FontAwesomeIcon
+            color="rgba(0, 0, 0, 0.6)"
+            icon={faList}
+            size={width * 0.04}
+            style={styles.icon}
+          />
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={handleRemove}>
+          <FontAwesomeIcon
+            color="rgba(0, 0, 0, 0.6)"
+            icon={faTrash}
+            size={width * 0.04}
+            style={styles.icon}
+          />
+        </TouchableWithoutFeedback>
       </View>
     </View>
   );

@@ -8,10 +8,27 @@ const saveStorageData = async (key: string, data: string) => {
   }
 };
 
+const multiSaveStorageData = async (data: [string, string][]) => {
+  try {
+    await AsyncStorage.multiSet(data);
+  } catch (error) {
+    console.error('Erro ao salvar o dado no storafe:', error);
+  }
+};
+
 const getStorageData = async (key: string) => {
   try {
     const data = await AsyncStorage.getItem(key);
-    // console.log('data', data)
+    return Promise.resolve(data);
+  } catch (error) {
+    console.error('Erro ao recuperar o dado do storage:', error);
+    return Promise.reject(error);
+  }
+};
+
+const multiGetStorageData = async (keys: string[]) => {
+  try {
+    const data = await AsyncStorage.multiGet(keys);
     return data;
   } catch (error) {
     console.error('Erro ao recuperar o dado do storage:', error);
@@ -27,4 +44,10 @@ const removeStorageData = async (key: string) => {
   }
 };
 
-export { saveStorageData, getStorageData, removeStorageData };
+export {
+  saveStorageData,
+  getStorageData,
+  removeStorageData,
+  multiSaveStorageData,
+  multiGetStorageData,
+};

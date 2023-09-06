@@ -54,7 +54,7 @@ function App(): JSX.Element {
   return (
     <NavigationContainer>
       <PaperProvider theme={theme}>
-        <Stack.Navigator initialRouteName="ListAnalysis">
+        <Stack.Navigator initialRouteName="SignIn">
           <Stack.Screen
             name="SignIn"
             component={SignIn}

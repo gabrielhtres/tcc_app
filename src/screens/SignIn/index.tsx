@@ -4,15 +4,12 @@ import { Button, Text, TextInput, useTheme } from 'react-native-paper';
 import styles from './styles';
 import { MyTheme } from '../../../App';
 import { maskCPF } from '../../utils/textMasks';
-// import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-// import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import TextError from '../../components/TextError';
 import api from '../../utils/api';
-import { saveStorageData } from '../../utils/storageService';
-// import {
-//   GestureHandlerRootView,
-//   TouchableWithoutFeedback,
-// } from 'react-native-gesture-handler';
+import {
+  saveStorageData,
+  multiSaveStorageData,
+} from '../../utils/storageService';
 
 interface Props {
   navigation: any;
@@ -31,10 +28,16 @@ function SignIn({ navigation }: Props) {
       .post('/signin', { email: cpf, password })
       .then(res => {
         if (res.data.token && res.data.refreshToken) {
-          // console.log(res.data.token, res.data.refreshToken)
           saveStorageData('jwtToken', res.data.token);
           saveStorageData('jwtRefreshToken', res.data.refreshToken);
-          navigation.navigate('ListAnalysis');
+          multiSaveStorageData([
+            ['id', res.data.id.toString()],
+            ['name', res.data.name],
+            ['email', res.data.email],
+            // ['cpf', res.data.cpf],
+            // ['phone', res.data.phone],
+          ]);
+          navigation.replace('ListAnalysis');
         }
       })
       .catch(err => console.log('erro', err.message));
@@ -60,13 +63,12 @@ function SignIn({ navigation }: Props) {
     if (haveError) {
       return false;
     }
-    
 
     setCpfError(false);
     setPasswordError(false);
-    
+
     makeSignIn();
-  
+
     return true;
   };
 
@@ -99,7 +101,6 @@ function SignIn({ navigation }: Props) {
         value={password}
         secureTextEntry={false}
         onChangeText={e => {
-          // console.log('password', e);
           setPassword(e);
           setPasswordError(false);
         }}

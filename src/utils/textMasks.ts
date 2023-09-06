@@ -11,7 +11,6 @@ function maskCPF(text: string) {
     newText += caractere;
   });
 
-  // console.log(newText);
   return newText;
 }
 

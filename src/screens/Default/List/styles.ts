@@ -7,6 +7,9 @@ const styles = StyleSheet.create({
     margin: width * 0.05,
     fontSize: 20,
   },
+  scrollContainer: {
+    marginBottom: 20,
+  },
 });
 
 export default styles;

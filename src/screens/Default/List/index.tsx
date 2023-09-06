@@ -9,21 +9,24 @@ import {
   GestureHandlerRootView,
   ScrollView,
 } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-// type List<T> = T[];
 
 interface Props {
   menuTitle: string;
   screenTitle: string;
   list: any[];
+  screen: string;
+  routeDelete: string;
+  navigation: any;
 }
 
-function DefaultListScreen({ menuTitle, screenTitle, list }: Props) {
-  // const { width, height } = Dimensions.get('window');
-  // const theme: MyTheme = useTheme();
-  console.log('list', list);
-
+function DefaultListScreen({
+  menuTitle,
+  screenTitle,
+  list,
+  screen,
+  routeDelete,
+  navigation,
+}: Props) {
   const [showMenu, setShowMenu] = useState(false);
 
   return (
@@ -34,9 +37,19 @@ function DefaultListScreen({ menuTitle, screenTitle, list }: Props) {
 
       <Text style={styles.title}>{menuTitle}</Text>
 
-      <ScrollView style={{ marginBottom: 20 }}>
+      <ScrollView style={styles.scrollContainer}>
         {list.length > 0 ? (
-          list.map(item => <ListItem title={item.title} key={item.id} />)
+          list.map(item => (
+            <ListItem
+              id={item.id}
+              title={item.name}
+              statusId={item.statusId}
+              screen={screen}
+              routeDelete={routeDelete}
+              navigation={navigation}
+              key={item.id}
+            />
+          ))
         ) : (
           <EmptyList />
         )}
