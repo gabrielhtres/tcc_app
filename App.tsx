@@ -56,26 +56,26 @@ function App(): JSX.Element {
   return (
     <NavigationContainer>
       <PaperProvider theme={theme}>
-        <Stack.Navigator initialRouteName="SignIn">
+        <Stack.Navigator initialRouteName="ListAnalysis">
           <Stack.Screen
             name="SignIn"
             component={SignIn}
-            options={{ headerShown: false }}
+            options={{ headerShown: false, freezeOnBlur: false }}
           />
           <Stack.Screen
             name="SignUp"
             component={SignUp}
-            options={{ headerShown: false }}
+            options={{ headerShown: false, freezeOnBlur: false }}
           />
           <Stack.Screen
             name="ListAnalysis"
             component={ListAnalysis}
-            options={{ headerShown: false }}
+            options={{ headerShown: false, freezeOnBlur: false }}
           />
           <Stack.Screen
             name="AddEditAnalysis"
             component={AddEditAnalysis}
-            options={{ headerShown: false }}
+            options={{ headerShown: false, freezeOnBlur: false }}
           />
         </Stack.Navigator>
       </PaperProvider>

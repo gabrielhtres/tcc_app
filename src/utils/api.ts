@@ -7,7 +7,7 @@ const getToken = async () => {
 };
 
 const api = axios.create({
-  baseURL: 'http://192.168.1.155:3030',
+  baseURL: 'http://192.168.0.105:3030',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
@@ -31,5 +31,25 @@ api.interceptors.request.use(
     return Promise.reject(error);
   },
 );
+
+api.interceptors.response.use(
+  async response => {
+    if (response.status === 401) {
+      const refreshToken = await getStorageData('jwtRefreshToken');
+
+      if (!refreshToken) {
+        return response;
+      }
+
+      api.post('/refresh', undefined, { headers: { Authorization: `Bearer ${refreshToken}`} }).then(res => {
+        return res;
+      }).catch(() => {
+        return response;
+      });
+    }
+
+    return response;
+  }
+)
 
 export default api;

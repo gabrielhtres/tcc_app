@@ -28,6 +28,9 @@ function AddEditAnalysis({ navigation }: Props) {
   useEffect(() => {
     if (route.params) {
       const { editId } = route.params as any;
+
+      if (!editId) return;
+      
       api.get(`/analysis/${editId}`).then(res => {
         setFieldValues(res.data);
       });
@@ -35,12 +38,22 @@ function AddEditAnalysis({ navigation }: Props) {
   }, [route.params]);
 
   const submitData = async () => {
-    if (route.params) {
-      const { editId } = route.params as any;
-      await api.put(`/analysis/${editId}`, fieldValues);
-      return;
+    console.log('veio no submit');
+    
+    try {
+      if (route.params) {
+        const { editId } = route.params as any;
+  
+        if (editId) {
+          await api.put(`/analysis/${editId}`, fieldValues);
+          return;
+        }
+      }
+  
+      await api.post('/analysis', fieldValues);
+    } catch (err: any) {
+      console.log(err.response.data.message)
     }
-    await api.post('/analysis', fieldValues);
   };
 
   return (
@@ -87,13 +100,13 @@ function AddEditAnalysis({ navigation }: Props) {
       <DefaultFloatButton
         isView={isView}
         onPress={() => {
-          submitData();
-          navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [{ name: 'ListAnalysis' }],
-            }),
-          );
+          submitData().then(() => {
+            navigation.dispatch(
+              CommonActions.reset({
+                routes: [{ name: 'ListAnalysis' }],
+              }),
+            );
+          })
         }}
         type="save"
       />
