@@ -5,6 +5,7 @@ import { getStorageData } from '../../../utils/storageService';
 import { useEffect, useState } from 'react';
 import Loader from '../../../components/Loader';
 import validateUser from '../../../utils/validateUser';
+// import validateUser from '../../../utils/validateUser';
 
 function ListAnalysis({ navigation }: any) {
   const [analysisList, setAnalysisList] = useState<any[]>([]);
@@ -14,7 +15,7 @@ function ListAnalysis({ navigation }: any) {
   const getAnalysisList = async () => {
     const name = await getStorageData('name');
     const res = await api.get('/analysis/list');
-    
+
     setAnalysisList(res.data || []);
     setUsername(name || '');
     setLoading(false);
@@ -23,6 +24,7 @@ function ListAnalysis({ navigation }: any) {
   useEffect(() => {
     validateUser(navigation);
     getAnalysisList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return loading ? (

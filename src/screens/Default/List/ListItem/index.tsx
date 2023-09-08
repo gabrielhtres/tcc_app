@@ -75,6 +75,10 @@ function ListItem({
     navigation.replace('ListAnalysis');
   };
 
+  const handleList = () => {
+    navigation.navigate('ListPlot', { headerName: title, analysisId: id });
+  };
+
   return (
     <View
       style={{ ...styles.container, backgroundColor: theme.colors.background }}
@@ -100,7 +104,7 @@ function ListItem({
             style={styles.icon}
           />
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={handleList}>
           <FontAwesomeIcon
             color="rgba(0, 0, 0, 0.6)"
             icon={faList}

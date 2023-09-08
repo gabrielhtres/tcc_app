@@ -18,6 +18,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import ListAnalysis from './src/screens/Analysis/List';
 import { MD3Colors } from 'react-native-paper/lib/typescript/types';
 import AddEditAnalysis from './src/screens/Analysis/AddEdit';
+import ListPlot from './src/screens/Plot/List';
 
 interface MyColors extends MD3Colors {
   primaryText: string;
@@ -77,6 +78,16 @@ function App(): JSX.Element {
             component={AddEditAnalysis}
             options={{ headerShown: false, freezeOnBlur: false }}
           />
+          <Stack.Screen
+            name="ListPlot"
+            component={ListPlot}
+            options={{ headerShown: false, freezeOnBlur: false }}
+          />
+          {/* <Stack.Screen
+            name="AddEditPlot"
+            component={AddEditPlot}
+            options={{ headerShown: false, freezeOnBlur: false }}
+          /> */}
         </Stack.Navigator>
       </PaperProvider>
     </NavigationContainer>
