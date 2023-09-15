@@ -27,9 +27,11 @@ function AddEditPlot({ navigation }: Props) {
 
   const route = useRoute();
 
-  const { isView } = route.params as any;
+  const { isView, headerName, parentId } = route.params as any;
 
   useEffect(() => {
+    console.log('analysisIdParam nessa merda vtnc fdp', parentId);
+
     if (route.params) {
       const { editId } = route.params as any;
 
@@ -41,11 +43,9 @@ function AddEditPlot({ navigation }: Props) {
         setFieldValues(res.data);
       });
     }
-  }, [route.params]);
+  }, [parentId, route.params]);
 
   const submitData = async () => {
-    console.log('veio no submit');
-
     try {
       if (route.params) {
         const { editId } = route.params as any;
@@ -56,7 +56,11 @@ function AddEditPlot({ navigation }: Props) {
         }
       }
 
-      await api.post('/plot', fieldValues);
+      if (!parentId) {
+        return;
+      }
+
+      await api.post(`/plot/${parentId}`, fieldValues);
     } catch (err: any) {
       console.log(err.response.data.message);
     }
@@ -127,12 +131,17 @@ function AddEditPlot({ navigation }: Props) {
       <DefaultFloatButton
         isView={isView}
         onPress={() => {
+          // console.log('analysisId', analysisId);
+
           submitData().then(() => {
-            navigation.dispatch(
-              CommonActions.reset({
-                routes: [{ name: 'ListPlot' }],
-              }),
-            );
+            navigation.navigate('ListPlot', { headerName, parentId });
+            // navigation.dispatch(
+            //   CommonActions.reset({
+            //     routes: [
+            //       { name: 'ListPlot', params: { headerName, analysisId } },
+            //     ],
+            //   }),
+            // );
           });
         }}
         type="save"

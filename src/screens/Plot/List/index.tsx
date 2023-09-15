@@ -1,15 +1,17 @@
 import DefaultListScreen from '../../Default/List';
-import DefaultFloatButton from '../../../components/DefaultFloatButton';
 import api from '../../../utils/api';
 import { useEffect, useState } from 'react';
 import Loader from '../../../components/Loader';
 import validateUser from '../../../utils/validateUser';
 import { useRoute } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { setHeaderTitle } from '../../../store/slices/headerSlice';
+import { setTabTitle } from '../../../store/slices/tabSlice';
 // import validateUser from '../../../utils/validateUser';
 
 interface RouteParams {
   headerName: string;
-  analysisId: number;
+  parentId: number;
 }
 
 interface Props {
@@ -21,11 +23,19 @@ function ListPlot({ navigation }: Props) {
   const [loading, setLoading] = useState<boolean>(true);
 
   const route = useRoute();
+  const dispatch = useDispatch();
 
-  const { headerName, analysisId } = route?.params as RouteParams;
+  useEffect(() => {
+    dispatch(setHeaderTitle(''));
+    dispatch(setTabTitle('Análises'));
+  }, [dispatch]);
+
+  const { parentId } = route?.params as RouteParams;
 
   const getPlotList = async () => {
-    const res = await api.get(`/plot/list/${analysisId}`);
+    console.log('analysisId da buceta do get plot list', parentId);
+
+    const res = await api.get(`/plot/list/${parentId}`);
 
     setPlotList(res.data || []);
     setLoading(false);
@@ -42,16 +52,13 @@ function ListPlot({ navigation }: Props) {
   ) : (
     <>
       <DefaultListScreen
-        menuTitle={`Talhões de ${headerName || ''}`}
-        screenTitle="Talhões"
         list={plotList}
-        screen="AddEditPlot"
-        routeDelete="/plot"
+        addEditScreen="AddEditPlot"
+        listScreen="ListPlot"
+        childrenListScreen="PhaseList"
+        apiRoute="/plot"
         navigation={navigation}
-      />
-      <DefaultFloatButton
-        onPress={() => navigation.navigate('AddEditPlot', { isView: false })}
-        type="add"
+        parentId={parentId}
       />
     </>
   );

@@ -32,25 +32,23 @@ api.interceptors.request.use(
   },
 );
 
-api.interceptors.response.use(
-  async response => {
-    return response;
-  },
-  async error => {
-    const refreshToken = await getStorageData('refreshToken');
+// api.interceptors.response.use(
+//   async response => {
+//     return response;
+//   },
+//   async error => {
+//     // const refreshToken = await getStorageData('refreshToken');
 
-    if (error.response.status === 401) {
-      const res = await api.post('/refresh', undefined, {
-        headers: {
-          Authorization: `Bearer ${refreshToken}`,
-        },
-      });
+//     // if (error.response.status && error.response.status === 401) {
+//     //   const res = await api.post('/refresh', undefined, {
+//     //     headers: {
+//     //       Authorization: `Bearer ${refreshToken}`,
+//     //     },
+//     //   });
 
-      console.log(res);
-
-      return Promise.resolve(res.data);
-    }
-  },
-);
+//     return Promise.resolve(error);
+//     // }
+//   },
+// );
 
 export default api;

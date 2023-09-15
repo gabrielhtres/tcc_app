@@ -29,8 +29,10 @@ function AddEditAnalysis({ navigation }: Props) {
     if (route.params) {
       const { editId } = route.params as any;
 
-      if (!editId) return;
-      
+      if (!editId) {
+        return;
+      }
+
       api.get(`/analysis/${editId}`).then(res => {
         setFieldValues(res.data);
       });
@@ -39,20 +41,20 @@ function AddEditAnalysis({ navigation }: Props) {
 
   const submitData = async () => {
     console.log('veio no submit');
-    
+
     try {
       if (route.params) {
         const { editId } = route.params as any;
-  
+
         if (editId) {
           await api.put(`/analysis/${editId}`, fieldValues);
           return;
         }
       }
-  
+
       await api.post('/analysis', fieldValues);
     } catch (err: any) {
-      console.log(err.response.data.message)
+      console.log(err.response.data.message);
     }
   };
 
@@ -106,7 +108,7 @@ function AddEditAnalysis({ navigation }: Props) {
                 routes: [{ name: 'ListAnalysis' }],
               }),
             );
-          })
+          });
         }}
         type="save"
       />

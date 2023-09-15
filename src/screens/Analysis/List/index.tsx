@@ -1,23 +1,29 @@
 import DefaultListScreen from '../../Default/List';
 import DefaultFloatButton from '../../../components/DefaultFloatButton';
 import api from '../../../utils/api';
-import { getStorageData } from '../../../utils/storageService';
 import { useEffect, useState } from 'react';
 import Loader from '../../../components/Loader';
 import validateUser from '../../../utils/validateUser';
+import { useDispatch } from 'react-redux';
+import { setHeaderTitle } from '../../../store/slices/headerSlice';
+import { setTabTitle } from '../../../store/slices/tabSlice';
 // import validateUser from '../../../utils/validateUser';
 
 function ListAnalysis({ navigation }: any) {
   const [analysisList, setAnalysisList] = useState<any[]>([]);
-  const [username, setUsername] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setHeaderTitle('Bem-vindo de volta, Usuário!'));
+    dispatch(setTabTitle('Análises'));
+  }, [dispatch]);
 
   const getAnalysisList = async () => {
-    const name = await getStorageData('name');
     const res = await api.get('/analysis/list');
+    console.log('res', res.data);
 
     setAnalysisList(res.data || []);
-    setUsername(name || '');
     setLoading(false);
   };
 
@@ -32,12 +38,12 @@ function ListAnalysis({ navigation }: any) {
   ) : (
     <>
       <DefaultListScreen
-        menuTitle={`Bem-vindo de volta, ${username}!`}
-        screenTitle="Análises"
         list={analysisList}
-        screen="AddEditAnalysis"
-        routeDelete="/analysis"
+        addEditScreen="AddEditAnalysis"
+        listScreen="ListAnalysis"
+        apiRoute="/analysis"
         navigation={navigation}
+        childrenListScreen="ListPlot"
       />
       <DefaultFloatButton
         onPress={() =>

@@ -20,6 +20,8 @@ import { MD3Colors } from 'react-native-paper/lib/typescript/types';
 import AddEditAnalysis from './src/screens/Analysis/AddEdit';
 import ListPlot from './src/screens/Plot/List';
 import AddEditPlot from './src/screens/Plot/AddEdit';
+import { Provider } from 'react-redux';
+import store from './src/store';
 
 interface MyColors extends MD3Colors {
   primaryText: string;
@@ -56,42 +58,44 @@ function App(): JSX.Element {
   const Stack = createNativeStackNavigator();
 
   return (
-    <NavigationContainer>
-      <PaperProvider theme={theme}>
-        <Stack.Navigator initialRouteName="ListAnalysis">
-          <Stack.Screen
-            name="SignIn"
-            component={SignIn}
-            options={{ headerShown: false, freezeOnBlur: false }}
-          />
-          <Stack.Screen
-            name="SignUp"
-            component={SignUp}
-            options={{ headerShown: false, freezeOnBlur: false }}
-          />
-          <Stack.Screen
-            name="ListAnalysis"
-            component={ListAnalysis}
-            options={{ headerShown: false, freezeOnBlur: false }}
-          />
-          <Stack.Screen
-            name="AddEditAnalysis"
-            component={AddEditAnalysis}
-            options={{ headerShown: false, freezeOnBlur: false }}
-          />
-          <Stack.Screen
-            name="ListPlot"
-            component={ListPlot}
-            options={{ headerShown: false, freezeOnBlur: false }}
-          />
-          <Stack.Screen
-            name="AddEditPlot"
-            component={AddEditPlot}
-            options={{ headerShown: false, freezeOnBlur: false }}
-          />
-        </Stack.Navigator>
-      </PaperProvider>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <PaperProvider theme={theme}>
+          <Stack.Navigator initialRouteName="ListAnalysis">
+            <Stack.Screen
+              name="SignIn"
+              component={SignIn}
+              options={{ headerShown: false, freezeOnBlur: false }}
+            />
+            <Stack.Screen
+              name="SignUp"
+              component={SignUp}
+              options={{ headerShown: false, freezeOnBlur: false }}
+            />
+            <Stack.Screen
+              name="ListAnalysis"
+              component={ListAnalysis}
+              options={{ headerShown: false, freezeOnBlur: false }}
+            />
+            <Stack.Screen
+              name="AddEditAnalysis"
+              component={AddEditAnalysis}
+              options={{ headerShown: false, freezeOnBlur: false }}
+            />
+            <Stack.Screen
+              name="ListPlot"
+              component={ListPlot}
+              options={{ headerShown: false, freezeOnBlur: false }}
+            />
+            <Stack.Screen
+              name="AddEditPlot"
+              component={AddEditPlot}
+              options={{ headerShown: false, freezeOnBlur: false }}
+            />
+          </Stack.Navigator>
+        </PaperProvider>
+      </NavigationContainer>
+    </Provider>
   );
 }
 

@@ -3,13 +3,17 @@ import { View, Image } from 'react-native';
 import { Button, Text, TextInput, useTheme } from 'react-native-paper';
 import styles from './styles';
 import { MyTheme } from '../../../App';
-import { maskCPF } from '../../utils/textMasks';
+// import { maskCPF } from '../../utils/textMasks';
 import TextError from '../../components/TextError';
 import api from '../../utils/api';
 import {
   saveStorageData,
-  multiSaveStorageData,
+  // multiSaveStorageData,
 } from '../../utils/storageService';
+import { useDispatch } from 'react-redux';
+import { setUserData } from '../../store/slices/userSlice';
+import { setTabTitle } from '../../store/slices/tabSlice';
+import { setHeaderTitle } from '../../store/slices/headerSlice';
 
 interface Props {
   navigation: any;
@@ -23,6 +27,8 @@ function SignIn({ navigation }: Props) {
   const [passwordError, setPasswordError] = useState<boolean>(false);
   // const [hidePassword, setHideassword] = useState<boolean>(false);
 
+  const dispatch = useDispatch();
+
   const makeSignIn = () => {
     api
       .post('/signin', { email: cpf, password })
@@ -30,13 +36,25 @@ function SignIn({ navigation }: Props) {
         if (res.data.token && res.data.refreshToken) {
           saveStorageData('jwtToken', res.data.token);
           saveStorageData('jwtRefreshToken', res.data.refreshToken);
-          multiSaveStorageData([
-            ['id', res.data.id.toString()],
-            ['name', res.data.name],
-            ['email', res.data.email],
-            // ['cpf', res.data.cpf],
-            // ['phone', res.data.phone],
-          ]);
+          dispatch(
+            setUserData({
+              id: res.data.id,
+              name: res.data.name,
+              email: res.data.email,
+              cpf: res.data.cpf,
+              phone: res.data.phone,
+              password: res.data.password,
+              // multiSaveStorageData([
+              //   ['id', res.data.id.toString()],
+              //   ['name', res.data.name],
+              //   ['email', res.data.email],
+              //   // ['cpf', res.data.cpf],
+              //   // ['phone', res.data.phone],
+              // ]);
+            }),
+          );
+          dispatch(setTabTitle('Análises'));
+          dispatch(setHeaderTitle(`Bem-vindo de volta, ${res.data.name}!`));
           navigation.replace('ListAnalysis');
         }
       })

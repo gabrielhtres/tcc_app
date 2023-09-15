@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Text, useTheme } from 'react-native-paper';
 import Menu from '../../../components/Menu';
 import styles from './styles';
@@ -10,62 +10,105 @@ import {
   ScrollView,
 } from 'react-native-gesture-handler';
 import { MyTheme } from '../../../../App';
+import DefaultFloatButton from '../../../components/DefaultFloatButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { setHeaderTitle } from '../../../store/slices/headerSlice';
+import { setTabTitle } from '../../../store/slices/tabSlice';
+import api from '../../../utils/api';
 
 interface Props {
-  menuTitle: string;
-  screenTitle: string;
   list: any[];
-  screen: string;
-  routeDelete: string;
+  addEditScreen: string;
+  listScreen: string;
+  childrenListScreen: string;
+  apiRoute: string;
   navigation: any;
+  parentId?: number;
 }
 
 function DefaultListScreen({
-  menuTitle,
-  screenTitle,
   list,
-  screen,
-  routeDelete,
+  addEditScreen,
+  listScreen,
+  childrenListScreen,
+  apiRoute,
   navigation,
-}: Props) {
+  parentId,
+}: // parentId,
+Props) {
   const [showMenu, setShowMenu] = useState(false);
 
   const theme: MyTheme = useTheme();
+  const dispatch = useDispatch();
+  const screenTitle = useSelector((state: any) => state.tab.title);
+  const menuTitle = useSelector((state: any) => state.header.title);
+
+  const handleEdit = (id: number) => {
+    navigation.navigate(addEditScreen, { editId: id, isView: false });
+  };
+
+  const handleView = (id: number) => {
+    navigation.navigate(addEditScreen, { editId: id, isView: true });
+  };
+
+  const handleRemove = async (id: number) => {
+    await api.delete(`${apiRoute}/${id}`);
+    navigation.replace(listScreen);
+  };
+
+  const handleList = (title: string) => {
+    navigation.navigate(childrenListScreen, {
+      parentId,
+    });
+    dispatch(setHeaderTitle(`Talhões de ${title}`));
+  };
 
   return (
-    <GestureHandlerRootView
-      style={{ backgroundColor: theme.colors.background }}>
-      {showMenu && <Menu />}
+    <>
+      <GestureHandlerRootView
+        style={{ backgroundColor: theme.colors.background }}>
+        {showMenu && <Menu />}
 
-      <Header screenTitle={screenTitle} setShowMenu={setShowMenu} />
+        <Header screenTitle={screenTitle} setShowMenu={setShowMenu} />
 
-      <Text
-        style={{ ...styles.title, backgroundColor: theme.colors.background }}>
-        {menuTitle}
-      </Text>
+        <Text
+          style={{ ...styles.title, backgroundColor: theme.colors.background }}>
+          {menuTitle}
+        </Text>
 
-      <ScrollView
-        style={{
-          ...styles.scrollContainer,
-          backgroundColor: theme.colors.background,
-        }}>
-        {list.length > 0 ? (
-          list.map(item => (
-            <ListItem
-              id={item.id}
-              title={item.name}
-              statusId={item.statusId}
-              screen={screen}
-              routeDelete={routeDelete}
-              navigation={navigation}
-              key={item.id}
-            />
-          ))
-        ) : (
-          <EmptyList />
-        )}
-      </ScrollView>
-    </GestureHandlerRootView>
+        <ScrollView
+          style={{
+            ...styles.scrollContainer,
+            backgroundColor: theme.colors.background,
+          }}>
+          {list.length > 0 ? (
+            list.map(item => (
+              <ListItem
+                id={item.id}
+                title={item.name}
+                statusId={item.statusId}
+                key={item.id}
+                handleEdit={handleEdit}
+                handleView={handleView}
+                handleRemove={handleRemove}
+                handleList={handleList}
+              />
+            ))
+          ) : (
+            <EmptyList />
+          )}
+        </ScrollView>
+      </GestureHandlerRootView>
+      <DefaultFloatButton
+        onPress={() =>
+          navigation.navigate(addEditScreen, {
+            isView: false,
+            parentId,
+          })
+        }
+        type="add"
+      />
+    </>
   );
 }
 

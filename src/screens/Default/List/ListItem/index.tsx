@@ -12,25 +12,26 @@ import { Dimensions, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import styles from './styles';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import api from '../../../../utils/api';
 import { MyTheme } from '../../../../../App';
 
 interface Props {
   id: number;
   statusId: 1 | 2 | 3;
   title: string;
-  screen: string;
-  routeDelete: string;
-  navigation: any;
+  handleEdit: () => void;
+  handleView: () => void;
+  handleRemove: () => void;
+  handleList: () => void;
 }
 
 function ListItem({
   id,
   title,
   statusId,
-  screen,
-  routeDelete,
-  navigation,
+  handleEdit,
+  handleView,
+  handleRemove,
+  handleList,
 }: Props) {
   const { width } = Dimensions.get('window');
   const theme: MyTheme = useTheme();
@@ -60,23 +61,6 @@ function ListItem({
         style={styles.icon}
       />
     ),
-  };
-
-  const handleEdit = () => {
-    navigation.navigate(screen, { editId: id, isView: false });
-  };
-
-  const handleView = () => {
-    navigation.navigate(screen, { editId: id, isView: true });
-  };
-
-  const handleRemove = async () => {
-    await api.delete(`${routeDelete}/${id}`);
-    navigation.replace('ListAnalysis');
-  };
-
-  const handleList = () => {
-    navigation.navigate('ListPlot', { headerName: title, analysisId: id });
   };
 
   return (
