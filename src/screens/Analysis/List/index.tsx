@@ -4,32 +4,36 @@ import api from '../../../utils/api';
 import { useEffect, useState } from 'react';
 import Loader from '../../../components/Loader';
 import validateUser from '../../../utils/validateUser';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setHeaderTitle } from '../../../store/slices/headerSlice';
 import { setTabTitle } from '../../../store/slices/tabSlice';
-// import validateUser from '../../../utils/validateUser';
 
 function ListAnalysis({ navigation }: any) {
   const [analysisList, setAnalysisList] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(setHeaderTitle('Bem-vindo de volta, Usuário!'));
-    dispatch(setTabTitle('Análises'));
-  }, [dispatch]);
-
   const getAnalysisList = async () => {
     const res = await api.get('/analysis/list');
-    console.log('res', res.data);
 
     setAnalysisList(res.data || []);
+    
     setLoading(false);
   };
+
+  const handleRemove = () => {
+    getAnalysisList();
+  }
+
+  useEffect(() => {
+    dispatch(setHeaderTitle(`Suas Análises`));
+    dispatch(setTabTitle('Análises'));
+  })
 
   useEffect(() => {
     validateUser(navigation);
     getAnalysisList();
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -44,12 +48,7 @@ function ListAnalysis({ navigation }: any) {
         apiRoute="/analysis"
         navigation={navigation}
         childrenListScreen="ListPlot"
-      />
-      <DefaultFloatButton
-        onPress={() =>
-          navigation.navigate('AddEditAnalysis', { isView: false })
-        }
-        type="add"
+        removeFunction={handleRemove}
       />
     </>
   );

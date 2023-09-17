@@ -12,9 +12,9 @@ import {
 import { MyTheme } from '../../../../App';
 import DefaultFloatButton from '../../../components/DefaultFloatButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { setHeaderTitle } from '../../../store/slices/headerSlice';
-import { setTabTitle } from '../../../store/slices/tabSlice';
 import api from '../../../utils/api';
+import { CommonActions } from '@react-navigation/native';
+import { setHeaderTitle } from '../../../store/slices/headerSlice';
 
 interface Props {
   list: any[];
@@ -24,6 +24,7 @@ interface Props {
   apiRoute: string;
   navigation: any;
   parentId?: number;
+  removeFunction: () => void;
 }
 
 function DefaultListScreen({
@@ -34,7 +35,8 @@ function DefaultListScreen({
   apiRoute,
   navigation,
   parentId,
-}: // parentId,
+  removeFunction,
+}:
 Props) {
   const [showMenu, setShowMenu] = useState(false);
 
@@ -53,15 +55,23 @@ Props) {
 
   const handleRemove = async (id: number) => {
     await api.delete(`${apiRoute}/${id}`);
-    navigation.replace(listScreen);
+    removeFunction();
   };
 
-  const handleList = (title: string) => {
+  const handleList = (id: number) => {
     navigation.navigate(childrenListScreen, {
-      parentId,
+      parentId: id,
+      parentName: list.find(item => item.id === id)?.name,
     });
-    dispatch(setHeaderTitle(`Talhões de ${title}`));
   };
+  
+  // const handleAdd = (id: number) => {
+  //   navigation.navigate(addEditScreen, { isView: false, parentId: id });
+  // }
+
+  useEffect(() => {
+    console.log('parentId q veio', parentId);
+  }, [parentId]);
 
   return (
     <>
@@ -100,12 +110,9 @@ Props) {
         </ScrollView>
       </GestureHandlerRootView>
       <DefaultFloatButton
-        onPress={() =>
-          navigation.navigate(addEditScreen, {
-            isView: false,
-            parentId,
-          })
-        }
+        onPress={() => {
+          navigation.navigate(addEditScreen, { isView: false, parentId });
+        }}
         type="add"
       />
     </>

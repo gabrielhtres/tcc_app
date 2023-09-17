@@ -27,14 +27,10 @@ function AddEditPlot({ navigation }: Props) {
 
   const route = useRoute();
 
-  const { isView, headerName, parentId } = route.params as any;
+  const { isView, parentId, editId } = route.params as any;
 
   useEffect(() => {
-    console.log('analysisIdParam nessa merda vtnc fdp', parentId);
-
     if (route.params) {
-      const { editId } = route.params as any;
-
       if (!editId) {
         return;
       }
@@ -43,24 +39,27 @@ function AddEditPlot({ navigation }: Props) {
         setFieldValues(res.data);
       });
     }
-  }, [parentId, route.params]);
+  }, [route.params]);
+
+  useEffect(() => {
+    console.log(route.params);
+  }, [route.params]);
 
   const submitData = async () => {
     try {
       if (route.params) {
-        const { editId } = route.params as any;
-
+        console.log('editId', editId);
+        console.log('parentId', parentId);
+        
         if (editId) {
           await api.put(`/plot/${editId}`, fieldValues);
           return;
         }
-      }
 
-      if (!parentId) {
-        return;
+        if (parentId) {
+          await api.post(`/plot/${parentId}`, fieldValues);
+        }
       }
-
-      await api.post(`/plot/${parentId}`, fieldValues);
     } catch (err: any) {
       console.log(err.response.data.message);
     }
@@ -118,30 +117,16 @@ function AddEditPlot({ navigation }: Props) {
           </>
         }
       />
-      {/* <SaveButton
-          onPress={() =>
-            navigation.dispatch(
-              CommonActions.reset({
-                index: 0,
-                routes: [{ name: 'ListAnalysis' }],
-              }),
-            )
-          }
-        /> */}
       <DefaultFloatButton
         isView={isView}
         onPress={() => {
-          // console.log('analysisId', analysisId);
-
           submitData().then(() => {
-            navigation.navigate('ListPlot', { headerName, parentId });
-            // navigation.dispatch(
-            //   CommonActions.reset({
-            //     routes: [
-            //       { name: 'ListPlot', params: { headerName, analysisId } },
-            //     ],
-            //   }),
-            // );
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 1,
+                routes: [{ name: 'ListAnalysis' }, { name: 'ListPlot', params: { parentId } }],
+              }),
+            );
           });
         }}
         type="save"

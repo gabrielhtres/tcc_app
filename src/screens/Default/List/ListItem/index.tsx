@@ -13,15 +13,17 @@ import { Text, useTheme } from 'react-native-paper';
 import styles from './styles';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { MyTheme } from '../../../../../App';
+import { useDispatch } from 'react-redux';
+import { setHeaderTitle } from '../../../../store/slices/headerSlice';
 
 interface Props {
   id: number;
   statusId: 1 | 2 | 3;
   title: string;
-  handleEdit: () => void;
-  handleView: () => void;
-  handleRemove: () => void;
-  handleList: () => void;
+  handleEdit: (id: number) => void;
+  handleView: (id: number) => void;
+  handleRemove: (id: number) => void;
+  handleList: (id: number) => void;
 }
 
 function ListItem({
@@ -72,7 +74,7 @@ function ListItem({
         <Text style={styles.title}>{title}</Text>
       </View>
       <View style={styles.rightContainer}>
-        <TouchableWithoutFeedback onPress={handleEdit}>
+        <TouchableWithoutFeedback onPress={() => handleEdit(id)}>
           <FontAwesomeIcon
             color="rgba(0, 0, 0, 0.6)"
             icon={faPen}
@@ -80,7 +82,7 @@ function ListItem({
             style={styles.icon}
           />
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={handleView}>
+        <TouchableWithoutFeedback onPress={() => handleView(id)}>
           <FontAwesomeIcon
             color="rgba(0, 0, 0, 0.6)"
             icon={faEye}
@@ -88,7 +90,7 @@ function ListItem({
             style={styles.icon}
           />
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={handleList}>
+        <TouchableWithoutFeedback onPress={() => handleList(id)}>
           <FontAwesomeIcon
             color="rgba(0, 0, 0, 0.6)"
             icon={faList}
@@ -96,7 +98,7 @@ function ListItem({
             style={styles.icon}
           />
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={handleRemove}>
+        <TouchableWithoutFeedback onPress={() => handleRemove(id)}>
           <FontAwesomeIcon
             color="rgba(0, 0, 0, 0.6)"
             icon={faTrash}

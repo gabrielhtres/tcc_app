@@ -10,8 +10,8 @@ import { setTabTitle } from '../../../store/slices/tabSlice';
 // import validateUser from '../../../utils/validateUser';
 
 interface RouteParams {
-  headerName: string;
   parentId: number;
+  parentName: string;
 }
 
 interface Props {
@@ -25,24 +25,24 @@ function ListPlot({ navigation }: Props) {
   const route = useRoute();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(setHeaderTitle(''));
-    dispatch(setTabTitle('Análises'));
-  }, [dispatch]);
-
-  const { parentId } = route?.params as RouteParams;
-
   const getPlotList = async () => {
-    console.log('analysisId da buceta do get plot list', parentId);
+    const { parentId } = route?.params as RouteParams;
 
     const res = await api.get(`/plot/list/${parentId}`);
 
     setPlotList(res.data || []);
+    dispatch(setHeaderTitle(`Talhões de ${(route?.params as RouteParams)?.parentName}`));
+    dispatch(setTabTitle('Talhões'));
     setLoading(false);
   };
+  
+  const handleRemove = () => {
+    getPlotList();
+  }
 
   useEffect(() => {
     validateUser(navigation);
+    console.log('veio no ue do get');
     getPlotList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -55,10 +55,11 @@ function ListPlot({ navigation }: Props) {
         list={plotList}
         addEditScreen="AddEditPlot"
         listScreen="ListPlot"
-        childrenListScreen="PhaseList"
         apiRoute="/plot"
         navigation={navigation}
-        parentId={parentId}
+        childrenListScreen="PhaseList"
+        parentId={(route?.params as RouteParams)?.parentId}
+        removeFunction={handleRemove}
       />
     </>
   );

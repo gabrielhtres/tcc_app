@@ -40,8 +40,6 @@ function AddEditAnalysis({ navigation }: Props) {
   }, [route.params]);
 
   const submitData = async () => {
-    console.log('veio no submit');
-
     try {
       if (route.params) {
         const { editId } = route.params as any;
