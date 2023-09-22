@@ -12,31 +12,35 @@ interface Props {
   navigation: any;
 }
 
-function ListPlot({ navigation }: Props) {
-  const [plotList, setPlotList] = useState<any[]>([]);
+function ListFungicide({ navigation }: Props) {
+  const [fungicideList, setFungicideList] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const dispatch = useDispatch();
-  const analysis = useSelector((state: any) => state.parent.parents.analysis);
-  console.log('analysis', analysis);
+  const defaultDisease = useSelector(
+    (state: any) => state.parent.parents.disease,
+  );
 
-  const getPlotList = async () => {
-    const res = await api.get(`/plot/list/${analysis.id}`);
-    setPlotList(res.data || []);
+  const getFungicideList = async () => {
+    const res = await api.get(`/fungicide/list-select/${defaultDisease.id}`);
+    console.log('res', res.data);
+    setFungicideList(res.data || []);
     setLoading(false);
   };
 
   const handleRemove = () => {
     setLoading(true);
-    getPlotList();
+    getFungicideList();
   };
 
   useFocusEffect(
     useCallback(() => {
       validateUser(navigation);
-      dispatch(setHeaderTitle(`Talhões de ${analysis.name}`));
-      dispatch(setTabTitle('Talhões'));
-      getPlotList();
+      dispatch(
+        setHeaderTitle(`Fungicidas Recomendados para ${defaultDisease.name}`),
+      );
+      dispatch(setTabTitle('Fungicidas'));
+      getFungicideList();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [navigation]),
   );
@@ -46,17 +50,23 @@ function ListPlot({ navigation }: Props) {
   ) : (
     <>
       <DefaultListScreen
-        list={plotList}
-        addEditScreen="AddEditPlot"
-        listScreen="ListPlot"
-        apiRoute="/plot"
+        list={fungicideList.map(item => {
+          return {
+            ...item,
+            name: item.tradeMark,
+          };
+        })}
+        addEditScreen=""
+        listScreen=""
+        apiRoute="/fungicide"
         navigation={navigation}
-        childrenListScreen="ListPhase"
-        parentName="plot"
+        childrenListScreen=""
+        parentName="disease"
         removeFunction={handleRemove}
+        simpleList
       />
     </>
   );
 }
 
-export default ListPlot;
+export default ListFungicide;

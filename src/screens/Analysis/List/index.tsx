@@ -1,12 +1,12 @@
 import DefaultListScreen from '../../Default/List';
-import DefaultFloatButton from '../../../components/DefaultFloatButton';
 import api from '../../../utils/api';
-import { useEffect, useState } from 'react';
+import { useState, useCallback } from 'react';
 import Loader from '../../../components/Loader';
 import validateUser from '../../../utils/validateUser';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setHeaderTitle } from '../../../store/slices/headerSlice';
 import { setTabTitle } from '../../../store/slices/tabSlice';
+import { useFocusEffect } from '@react-navigation/native';
 
 function ListAnalysis({ navigation }: any) {
   const [analysisList, setAnalysisList] = useState<any[]>([]);
@@ -15,27 +15,23 @@ function ListAnalysis({ navigation }: any) {
 
   const getAnalysisList = async () => {
     const res = await api.get('/analysis/list');
-
     setAnalysisList(res.data || []);
-    
     setLoading(false);
   };
 
   const handleRemove = () => {
     getAnalysisList();
-  }
+  };
 
-  useEffect(() => {
-    dispatch(setHeaderTitle(`Suas Análises`));
-    dispatch(setTabTitle('Análises'));
-  })
-
-  useEffect(() => {
-    validateUser(navigation);
-    getAnalysisList();
-    
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      validateUser(navigation);
+      dispatch(setHeaderTitle('Suas Análises'));
+      dispatch(setTabTitle('Análises'));
+      getAnalysisList();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   return loading ? (
     <Loader />
@@ -46,8 +42,9 @@ function ListAnalysis({ navigation }: any) {
         addEditScreen="AddEditAnalysis"
         listScreen="ListAnalysis"
         apiRoute="/analysis"
-        navigation={navigation}
         childrenListScreen="ListPlot"
+        parentName="analysis"
+        navigation={navigation}
         removeFunction={handleRemove}
       />
     </>

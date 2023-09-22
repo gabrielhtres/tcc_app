@@ -22,6 +22,11 @@ import ListPlot from './src/screens/Plot/List';
 import AddEditPlot from './src/screens/Plot/AddEdit';
 import { Provider } from 'react-redux';
 import store from './src/store';
+import ListPhase from './src/screens/Phase/List';
+import AddEditPhase from './src/screens/Phase/AddEdit';
+import ListDisease from './src/screens/Disease/List';
+import AddEditDisease from './src/screens/Disease/AddEdit';
+import ListFungicide from './src/screens/Fungicide/List';
 
 interface MyColors extends MD3Colors {
   primaryText: string;
@@ -51,7 +56,7 @@ function App(): JSX.Element {
       primaryText: '#FFFFFF',
       errorColor: '#B3271C',
       background: '#FFF',
-      backdrop: '#FFF',
+      backdrop: 'rgba(0, 0, 0, 0.6)',
     },
   };
 
@@ -90,6 +95,31 @@ function App(): JSX.Element {
             <Stack.Screen
               name="AddEditPlot"
               component={AddEditPlot}
+              options={{ headerShown: false, freezeOnBlur: false }}
+            />
+            <Stack.Screen
+              name="ListPhase"
+              component={ListPhase}
+              options={{ headerShown: false, freezeOnBlur: false }}
+            />
+            <Stack.Screen
+              name="AddEditPhase"
+              component={AddEditPhase}
+              options={{ headerShown: false, freezeOnBlur: false }}
+            />
+            <Stack.Screen
+              name="ListDisease"
+              component={ListDisease}
+              options={{ headerShown: false, freezeOnBlur: false }}
+            />
+            <Stack.Screen
+              name="AddEditDisease"
+              component={AddEditDisease}
+              options={{ headerShown: false, freezeOnBlur: false }}
+            />
+            <Stack.Screen
+              name="ListFungicide"
+              component={ListFungicide}
               options={{ headerShown: false, freezeOnBlur: false }}
             />
           </Stack.Navigator>

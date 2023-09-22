@@ -12,31 +12,31 @@ interface Props {
   navigation: any;
 }
 
-function ListPlot({ navigation }: Props) {
-  const [plotList, setPlotList] = useState<any[]>([]);
+function ListDisease({ navigation }: Props) {
+  const [diseaseList, setDiseaseList] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const dispatch = useDispatch();
-  const analysis = useSelector((state: any) => state.parent.parents.analysis);
-  console.log('analysis', analysis);
+  const phase = useSelector((state: any) => state.parent.parents.phase);
+  console.log('phase', phase);
 
-  const getPlotList = async () => {
-    const res = await api.get(`/plot/list/${analysis.id}`);
-    setPlotList(res.data || []);
+  const getDiseaseList = async () => {
+    const res = await api.get(`/disease/list/${phase.id}`);
+    setDiseaseList(res.data || []);
     setLoading(false);
   };
 
   const handleRemove = () => {
     setLoading(true);
-    getPlotList();
+    getDiseaseList();
   };
 
   useFocusEffect(
     useCallback(() => {
       validateUser(navigation);
-      dispatch(setHeaderTitle(`Talhões de ${analysis.name}`));
-      dispatch(setTabTitle('Talhões'));
-      getPlotList();
+      dispatch(setHeaderTitle(`Doenças de ${phase.name}`));
+      dispatch(setTabTitle('Doenças'));
+      getDiseaseList();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [navigation]),
   );
@@ -46,17 +46,24 @@ function ListPlot({ navigation }: Props) {
   ) : (
     <>
       <DefaultListScreen
-        list={plotList}
-        addEditScreen="AddEditPlot"
-        listScreen="ListPlot"
-        apiRoute="/plot"
+        list={diseaseList.map(item => {
+          return {
+            ...item,
+            name: item.defaultDisease.commonNames,
+            defaultId: item.defaultDisease.id,
+          };
+        })}
+        addEditScreen="AddEditDisease"
+        listScreen="ListDisease"
+        apiRoute="/disease"
         navigation={navigation}
-        childrenListScreen="ListPhase"
-        parentName="plot"
+        childrenListScreen="ListFungicide"
+        parentName="disease"
         removeFunction={handleRemove}
+        fungicideList
       />
     </>
   );
 }
 
-export default ListPlot;
+export default ListDisease;

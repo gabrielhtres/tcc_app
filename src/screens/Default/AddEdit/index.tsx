@@ -6,16 +6,17 @@ import Header from '../../../components/Header';
 import { View } from 'react-native';
 import styles from './styles';
 import { MyTheme } from '../../../../App';
+import { useSelector } from 'react-redux';
 
 interface Props {
-  menuTitle: string;
-  screenTitle: string;
   fields: JSX.Element;
 }
 
-function DefaultAddEditScreen({ menuTitle, screenTitle, fields }: Props) {
+function DefaultAddEditScreen({ fields }: Props) {
   // const { width, height } = Dimensions.get('window');
   const theme: MyTheme = useTheme();
+  const menuTitle = useSelector((state: any) => state.header.title);
+  const screenTitle = useSelector((state: any) => state.tab.title);
   const [showMenu, setShowMenu] = useState(false);
 
   return (

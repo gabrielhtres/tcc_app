@@ -12,31 +12,31 @@ interface Props {
   navigation: any;
 }
 
-function ListPlot({ navigation }: Props) {
-  const [plotList, setPlotList] = useState<any[]>([]);
+function ListPhase({ navigation }: Props) {
+  const [phaseList, setPhaseList] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const dispatch = useDispatch();
-  const analysis = useSelector((state: any) => state.parent.parents.analysis);
-  console.log('analysis', analysis);
+  const plot = useSelector((state: any) => state.parent.parents.plot);
+  console.log('plot', plot);
 
-  const getPlotList = async () => {
-    const res = await api.get(`/plot/list/${analysis.id}`);
-    setPlotList(res.data || []);
+  const getPhaseList = async () => {
+    const res = await api.get(`/phase/list/${plot.id}`);
+    setPhaseList(res.data || []);
     setLoading(false);
   };
 
   const handleRemove = () => {
     setLoading(true);
-    getPlotList();
+    getPhaseList();
   };
 
   useFocusEffect(
     useCallback(() => {
       validateUser(navigation);
-      dispatch(setHeaderTitle(`Talhões de ${analysis.name}`));
-      dispatch(setTabTitle('Talhões'));
-      getPlotList();
+      dispatch(setHeaderTitle(`Fases de ${plot.name}`));
+      dispatch(setTabTitle('Fases'));
+      getPhaseList();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [navigation]),
   );
@@ -46,17 +46,17 @@ function ListPlot({ navigation }: Props) {
   ) : (
     <>
       <DefaultListScreen
-        list={plotList}
-        addEditScreen="AddEditPlot"
-        listScreen="ListPlot"
-        apiRoute="/plot"
+        list={phaseList}
+        addEditScreen="AddEditPhase"
+        listScreen="ListPhase"
+        apiRoute="/phase"
         navigation={navigation}
-        childrenListScreen="ListPhase"
-        parentName="plot"
+        childrenListScreen="ListDisease"
+        parentName="phase"
         removeFunction={handleRemove}
       />
     </>
   );
 }
 
-export default ListPlot;
+export default ListPhase;

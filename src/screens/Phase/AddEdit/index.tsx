@@ -2,9 +2,10 @@ import DefaultAddEditScreen from '../../Default/AddEdit';
 import { TextInput } from 'react-native-paper';
 import { useEffect, useState } from 'react';
 import { CommonActions, useRoute } from '@react-navigation/native';
-import styles from './styles';
 import DefaultFloatButton from '../../../components/DefaultFloatButton';
 import api from '../../../utils/api';
+// import styles from './styles';
+import { useSelector } from 'react-redux';
 
 interface Props {
   navigation: any;
@@ -12,16 +13,15 @@ interface Props {
 
 interface FormType {
   name: string;
-  description: string;
 }
 
-function AddEditAnalysis({ navigation }: Props) {
+function AddEditPhase({ navigation }: Props) {
   const [fieldValues, setFieldValues] = useState<FormType>({
     name: '',
-    description: '',
   });
 
   const route = useRoute();
+  const plot = useSelector((state: any) => state.parent.parents.plot);
 
   const { isView, editId } = route.params as any;
 
@@ -30,7 +30,7 @@ function AddEditAnalysis({ navigation }: Props) {
       return;
     }
 
-    api.get(`/analysis/${editId}`).then(res => {
+    api.get(`/phase/${editId}`).then(res => {
       setFieldValues(res.data);
     });
   }, [editId]);
@@ -38,11 +38,13 @@ function AddEditAnalysis({ navigation }: Props) {
   const submitData = async () => {
     try {
       if (editId) {
-        await api.put(`/analysis/${editId}`, fieldValues);
+        await api.put(`/phase/${editId}`, fieldValues);
         return;
       }
 
-      await api.post('/analysis', fieldValues);
+      if (plot) {
+        await api.post(`/phase/${plot.id}`, fieldValues);
+      }
     } catch (err: any) {
       console.log(err.response.data.message);
     }
@@ -57,43 +59,27 @@ function AddEditAnalysis({ navigation }: Props) {
               editable={!isView}
               mode="outlined"
               label="Título"
-              style={styles.input}
+              // style={styles.input}
               value={fieldValues.name}
               onChangeText={text => {
                 setFieldValues({ ...fieldValues, name: text });
               }}
             />
-            <TextInput
-              editable={!isView}
-              mode="outlined"
-              label="Descrição"
-              multiline
-              numberOfLines={7}
-              value={fieldValues.description}
-              onChangeText={text => {
-                setFieldValues({ ...fieldValues, description: text });
-              }}
-            />
           </>
         }
       />
-      {/* <SaveButton
-          onPress={() =>
-            navigation.dispatch(
-              CommonActions.reset({
-                index: 0,
-                routes: [{ name: 'ListAnalysis' }],
-              }),
-            )
-          }
-        /> */}
       <DefaultFloatButton
         isView={isView}
         onPress={() => {
           submitData().then(() => {
             navigation.dispatch(
               CommonActions.reset({
-                routes: [{ name: 'ListAnalysis' }],
+                index: 2,
+                routes: [
+                  { name: 'ListAnalysis' },
+                  { name: 'ListPlot' },
+                  { name: 'ListPhase' },
+                ],
               }),
             );
           });
@@ -104,4 +90,4 @@ function AddEditAnalysis({ navigation }: Props) {
   );
 }
 
-export default AddEditAnalysis;
+export default AddEditPhase;

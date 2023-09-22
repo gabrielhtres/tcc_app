@@ -5,6 +5,7 @@ import { CommonActions, useRoute } from '@react-navigation/native';
 import DefaultFloatButton from '../../../components/DefaultFloatButton';
 import api from '../../../utils/api';
 import styles from './styles';
+import { useSelector } from 'react-redux';
 
 interface Props {
   navigation: any;
@@ -26,39 +27,29 @@ function AddEditPlot({ navigation }: Props) {
   });
 
   const route = useRoute();
+  const analysis = useSelector((state: any) => state.parent.parents.analysis);
 
-  const { isView, parentId, editId } = route.params as any;
+  const { isView, editId } = route.params as any;
 
   useEffect(() => {
-    if (route.params) {
-      if (!editId) {
-        return;
-      }
-
-      api.get(`/plot/${editId}`).then(res => {
-        setFieldValues(res.data);
-      });
+    if (!editId) {
+      return;
     }
-  }, [route.params]);
 
-  useEffect(() => {
-    console.log(route.params);
-  }, [route.params]);
+    api.get(`/plot/${editId}`).then(res => {
+      setFieldValues(res.data);
+    });
+  }, [editId]);
 
   const submitData = async () => {
     try {
-      if (route.params) {
-        console.log('editId', editId);
-        console.log('parentId', parentId);
-        
-        if (editId) {
-          await api.put(`/plot/${editId}`, fieldValues);
-          return;
-        }
+      if (editId) {
+        await api.put(`/plot/${editId}`, fieldValues);
+        return;
+      }
 
-        if (parentId) {
-          await api.post(`/plot/${parentId}`, fieldValues);
-        }
+      if (analysis) {
+        await api.post(`/plot/${analysis.id}`, fieldValues);
       }
     } catch (err: any) {
       console.log(err.response.data.message);
@@ -68,8 +59,6 @@ function AddEditPlot({ navigation }: Props) {
   return (
     <>
       <DefaultAddEditScreen
-        menuTitle={route.params ? 'Editar Talhão' : 'Adicionar Talhão'}
-        screenTitle="Talhões"
         fields={
           <>
             <TextInput
@@ -124,7 +113,7 @@ function AddEditPlot({ navigation }: Props) {
             navigation.dispatch(
               CommonActions.reset({
                 index: 1,
-                routes: [{ name: 'ListAnalysis' }, { name: 'ListPlot', params: { parentId } }],
+                routes: [{ name: 'ListAnalysis' }, { name: 'ListPlot' }],
               }),
             );
           });

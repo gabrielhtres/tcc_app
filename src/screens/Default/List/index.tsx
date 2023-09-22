@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Text, useTheme } from 'react-native-paper';
 import Menu from '../../../components/Menu';
 import styles from './styles';
@@ -13,7 +13,7 @@ import { MyTheme } from '../../../../App';
 import DefaultFloatButton from '../../../components/DefaultFloatButton';
 import { useDispatch, useSelector } from 'react-redux';
 import api from '../../../utils/api';
-import { CommonActions } from '@react-navigation/native';
+import { setParent } from '../../../store/slices/parentSlice';
 import { setHeaderTitle } from '../../../store/slices/headerSlice';
 
 interface Props {
@@ -23,33 +23,39 @@ interface Props {
   childrenListScreen: string;
   apiRoute: string;
   navigation: any;
-  parentId?: number;
+  parentName: 'analysis' | 'plot' | 'phase' | 'disease';
   removeFunction: () => void;
+  simpleList?: boolean;
+  fungicideList?: boolean;
 }
 
 function DefaultListScreen({
   list,
   addEditScreen,
-  listScreen,
+  // listScreen,
   childrenListScreen,
   apiRoute,
   navigation,
-  parentId,
+  parentName,
   removeFunction,
-}:
-Props) {
+  simpleList,
+  fungicideList,
+}: Props) {
   const [showMenu, setShowMenu] = useState(false);
 
   const theme: MyTheme = useTheme();
   const dispatch = useDispatch();
   const screenTitle = useSelector((state: any) => state.tab.title);
   const menuTitle = useSelector((state: any) => state.header.title);
+  const parents = useSelector((state: any) => state.parent.parents);
 
-  const handleEdit = (id: number) => {
+  const handleEdit = (id: number, name: string) => {
+    dispatch(setHeaderTitle(`Editar ${name}`));
     navigation.navigate(addEditScreen, { editId: id, isView: false });
   };
 
-  const handleView = (id: number) => {
+  const handleView = (id: number, name: string) => {
+    dispatch(setHeaderTitle(`Visualizar ${name}`));
     navigation.navigate(addEditScreen, { editId: id, isView: true });
   };
 
@@ -58,20 +64,24 @@ Props) {
     removeFunction();
   };
 
-  const handleList = (id: number) => {
-    navigation.navigate(childrenListScreen, {
-      parentId: id,
-      parentName: list.find(item => item.id === id)?.name,
-    });
+  const handleList = (id: number, name: string) => {
+    console.log('id q veio', id);
+
+    dispatch(
+      setParent({
+        ...parents,
+        [parentName]: {
+          id,
+          name,
+        },
+      }),
+    );
+    navigation.navigate(childrenListScreen);
   };
-  
+
   // const handleAdd = (id: number) => {
   //   navigation.navigate(addEditScreen, { isView: false, parentId: id });
   // }
-
-  useEffect(() => {
-    console.log('parentId q veio', parentId);
-  }, [parentId]);
 
   return (
     <>
@@ -95,6 +105,7 @@ Props) {
             list.map(item => (
               <ListItem
                 id={item.id}
+                defaultId={item.defaultId}
                 title={item.name}
                 statusId={item.statusId}
                 key={item.id}
@@ -102,6 +113,8 @@ Props) {
                 handleView={handleView}
                 handleRemove={handleRemove}
                 handleList={handleList}
+                simpleList={simpleList}
+                fungicideList={fungicideList}
               />
             ))
           ) : (
@@ -111,7 +124,7 @@ Props) {
       </GestureHandlerRootView>
       <DefaultFloatButton
         onPress={() => {
-          navigation.navigate(addEditScreen, { isView: false, parentId });
+          navigation.navigate(addEditScreen, { isView: false });
         }}
         type="add"
       />
