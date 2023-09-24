@@ -1,4 +1,3 @@
-import DefaultListScreen from '../../Default/List';
 import api from '../../../utils/api';
 import { useCallback, useState } from 'react';
 import Loader from '../../../components/Loader';
@@ -7,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setHeaderTitle } from '../../../store/slices/headerSlice';
 import { setTabTitle } from '../../../store/slices/tabSlice';
 import { useFocusEffect } from '@react-navigation/native';
+import DefaultSimpleListScreen from '../../Default/SimpleList';
 
 interface Props {
   navigation: any;
@@ -22,16 +22,17 @@ function ListFungicide({ navigation }: Props) {
   );
 
   const getFungicideList = async () => {
+    console.log('id', defaultDisease.id);
     const res = await api.get(`/fungicide/list-select/${defaultDisease.id}`);
-    console.log('res', res.data);
+    console.log('res', res.data[0]);
     setFungicideList(res.data || []);
     setLoading(false);
   };
 
-  const handleRemove = () => {
-    setLoading(true);
-    getFungicideList();
-  };
+  // const handleRemove = () => {
+  //   setLoading(true);
+  //   getFungicideList();
+  // };
 
   useFocusEffect(
     useCallback(() => {
@@ -49,21 +50,17 @@ function ListFungicide({ navigation }: Props) {
     <Loader />
   ) : (
     <>
-      <DefaultListScreen
+      <DefaultSimpleListScreen
         list={fungicideList.map(item => {
+          console.log('item', item.id, item.tradeMark);
           return {
             ...item,
             name: item.tradeMark,
           };
         })}
-        addEditScreen=""
-        listScreen=""
-        apiRoute="/fungicide"
         navigation={navigation}
-        childrenListScreen=""
         parentName="disease"
-        removeFunction={handleRemove}
-        simpleList
+        viewScreen="DetailFungicide"
       />
     </>
   );

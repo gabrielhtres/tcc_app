@@ -27,6 +27,7 @@ import AddEditPhase from './src/screens/Phase/AddEdit';
 import ListDisease from './src/screens/Disease/List';
 import AddEditDisease from './src/screens/Disease/AddEdit';
 import ListFungicide from './src/screens/Fungicide/List';
+import DetailFungicide from './src/screens/Fungicide/Detail';
 
 interface MyColors extends MD3Colors {
   primaryText: string;
@@ -120,6 +121,11 @@ function App(): JSX.Element {
             <Stack.Screen
               name="ListFungicide"
               component={ListFungicide}
+              options={{ headerShown: false, freezeOnBlur: false }}
+            />
+            <Stack.Screen
+              name="DetailFungicide"
+              component={DetailFungicide}
               options={{ headerShown: false, freezeOnBlur: false }}
             />
           </Stack.Navigator>

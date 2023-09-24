@@ -4,7 +4,6 @@ import {
   faHourglassStart,
   faList,
   faPen,
-  faSprayCan,
   faTrash,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
@@ -17,11 +16,9 @@ import { MyTheme } from '../../../../../App';
 
 interface Props {
   id: number;
-  defaultId?: number;
-  statusId: 1 | 2 | 3;
   title: string;
-  simpleList?: boolean;
-  fungicideList?: boolean;
+  statusId: 1 | 2 | 3;
+  defaultId?: number;
   handleEdit: (id: number, name: string) => void;
   handleView: (id: number, name: string) => void;
   handleList: (id: number, name: string) => void;
@@ -32,8 +29,6 @@ function ListItem({
   id,
   title,
   statusId,
-  simpleList,
-  fungicideList,
   defaultId,
   handleEdit,
   handleView,
@@ -42,6 +37,7 @@ function ListItem({
 }: Props) {
   const { width } = Dimensions.get('window');
   const theme: MyTheme = useTheme();
+  console.log('defaultId', defaultId);
 
   const icons = {
     1: (
@@ -79,16 +75,14 @@ function ListItem({
         <Text style={styles.title}>{title}</Text>
       </View>
       <View style={styles.rightContainer}>
-        {!simpleList && (
-          <TouchableWithoutFeedback onPress={() => handleEdit(id, title)}>
-            <FontAwesomeIcon
-              color="rgba(0, 0, 0, 0.6)"
-              icon={faPen}
-              size={width * 0.04}
-              style={styles.icon}
-            />
-          </TouchableWithoutFeedback>
-        )}
+        <TouchableWithoutFeedback onPress={() => handleEdit(id, title)}>
+          <FontAwesomeIcon
+            color="rgba(0, 0, 0, 0.6)"
+            icon={faPen}
+            size={width * 0.04}
+            style={styles.icon}
+          />
+        </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={() => handleView(id, title)}>
           <FontAwesomeIcon
             color="rgba(0, 0, 0, 0.6)"
@@ -97,27 +91,23 @@ function ListItem({
             style={styles.icon}
           />
         </TouchableWithoutFeedback>
-        {!simpleList && (
-          <>
-            <TouchableWithoutFeedback
-              onPress={() => handleList(defaultId || id, title)}>
-              <FontAwesomeIcon
-                color="rgba(0, 0, 0, 0.6)"
-                icon={!fungicideList ? faList : faSprayCan}
-                size={width * 0.04}
-                style={styles.icon}
-              />
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={() => handleRemove(id)}>
-              <FontAwesomeIcon
-                color="rgba(0, 0, 0, 0.6)"
-                icon={faTrash}
-                size={width * 0.04}
-                style={styles.icon}
-              />
-            </TouchableWithoutFeedback>
-          </>
-        )}
+        <TouchableWithoutFeedback
+          onPress={() => handleList(defaultId || id, title)}>
+          <FontAwesomeIcon
+            color="rgba(0, 0, 0, 0.6)"
+            icon={faList}
+            size={width * 0.04}
+            style={styles.icon}
+          />
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => handleRemove(id)}>
+          <FontAwesomeIcon
+            color="rgba(0, 0, 0, 0.6)"
+            icon={faTrash}
+            size={width * 0.04}
+            style={styles.icon}
+          />
+        </TouchableWithoutFeedback>
       </View>
     </View>
   );

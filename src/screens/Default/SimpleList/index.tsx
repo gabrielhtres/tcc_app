@@ -10,75 +10,28 @@ import {
   ScrollView,
 } from 'react-native-gesture-handler';
 import { MyTheme } from '../../../../App';
-import DefaultFloatButton from '../../../components/DefaultFloatButton';
 import { useDispatch, useSelector } from 'react-redux';
-import api from '../../../utils/api';
-import { setParent } from '../../../store/slices/parentSlice';
 import { setHeaderTitle } from '../../../store/slices/headerSlice';
 
 interface Props {
   list: any[];
-  addEditScreen: string;
-  listScreen: string;
-  childrenListScreen: string;
-  apiRoute: string;
+  viewScreen: string;
   navigation: any;
   parentName: 'analysis' | 'plot' | 'phase' | 'disease';
-  removeFunction: () => void;
-  simpleList?: boolean;
-  fungicideList?: boolean;
 }
 
-function DefaultListScreen({
-  list,
-  addEditScreen,
-  childrenListScreen,
-  apiRoute,
-  navigation,
-  parentName,
-  removeFunction,
-}: Props) {
+function DefaultSimpleListScreen({ list, viewScreen, navigation }: Props) {
   const [showMenu, setShowMenu] = useState(false);
 
   const theme: MyTheme = useTheme();
   const dispatch = useDispatch();
   const screenTitle = useSelector((state: any) => state.tab.title);
   const menuTitle = useSelector((state: any) => state.header.title);
-  const parents = useSelector((state: any) => state.parent.parents);
-
-  const handleEdit = (id: number, name: string) => {
-    dispatch(setHeaderTitle(`Editar ${name}`));
-    navigation.navigate(addEditScreen, { editId: id, isView: false });
-  };
 
   const handleView = (id: number, name: string) => {
     dispatch(setHeaderTitle(`Visualizar ${name}`));
-    navigation.navigate(addEditScreen, { editId: id, isView: true });
+    navigation.navigate(viewScreen, { viewId: id });
   };
-
-  const handleRemove = async (id: number) => {
-    await api.delete(`${apiRoute}/${id}`);
-    removeFunction();
-  };
-
-  const handleList = (id: number, name: string) => {
-    console.log('handle List', id, name);
-
-    dispatch(
-      setParent({
-        ...parents,
-        [parentName]: {
-          id,
-          name,
-        },
-      }),
-    );
-    navigation.navigate(childrenListScreen);
-  };
-
-  // const handleAdd = (id: number) => {
-  //   navigation.navigate(addEditScreen, { isView: false, parentId: id });
-  // }
 
   return (
     <>
@@ -103,13 +56,8 @@ function DefaultListScreen({
               <ListItem
                 id={item.id}
                 title={item.name}
-                statusId={item.statusId}
-                defaultId={item.defaultId}
                 key={item.id}
-                handleEdit={handleEdit}
                 handleView={handleView}
-                handleRemove={handleRemove}
-                handleList={handleList}
               />
             ))
           ) : (
@@ -117,14 +65,8 @@ function DefaultListScreen({
           )}
         </ScrollView>
       </GestureHandlerRootView>
-      <DefaultFloatButton
-        onPress={() => {
-          navigation.navigate(addEditScreen, { isView: false });
-        }}
-        type="add"
-      />
     </>
   );
 }
 
-export default DefaultListScreen;
+export default DefaultSimpleListScreen;

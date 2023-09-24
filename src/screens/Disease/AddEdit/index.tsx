@@ -141,7 +141,6 @@ function AddEditDisease({ navigation }: Props) {
                   disabled={!defaultDiseaseSelected || isView}
                   onPress={() => {
                     setShowInfo(true);
-                    console.log('clicado');
                   }}
                   // eslint-disable-next-line react-native/no-inline-styles
                   style={{
