@@ -8,10 +8,20 @@ import {
   faChartBar,
   faCircleInfo,
   faArrowRightFromBracket,
+  faClose,
 } from '@fortawesome/free-solid-svg-icons';
 import { MyTheme } from '../../../App';
+import {
+  GestureHandlerRootView,
+  TouchableOpacity,
+} from 'react-native-gesture-handler';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
-function Menu() {
+interface Props {
+  handleViewMenu: () => void;
+}
+
+function Menu({ handleViewMenu }: Props) {
   const theme: MyTheme = useTheme();
   const { fontScale } = Dimensions.get('window');
 
@@ -36,12 +46,21 @@ function Menu() {
         <Text style={{ color: theme.colors.primaryText }}>
           usuario@email.com
         </Text>
+        <GestureHandlerRootView style={styles.closeIcon}>
+          <TouchableOpacity onPress={handleViewMenu}>
+            <FontAwesomeIcon
+              icon={faClose}
+              size={fontScale * 20}
+              color={theme.colors.primaryText}
+            />
+          </TouchableOpacity>
+        </GestureHandlerRootView>
       </View>
-      <MenuItem icon={faUser} label="Meu Perfil" route="/teste" />
-      <MenuItem icon={faList} label="Análises" route="/teste" />
-      <MenuItem icon={faChartBar} label="Escalas" route="/teste" />
-      <MenuItem icon={faCircleInfo} label="Suporte e Ajuda" route="/teste" />
-      <MenuItem icon={faArrowRightFromBracket} label="Sair" route="/teste" />
+      <MenuItem icon={faUser} label="Meu Perfil" route="/user" />
+      <MenuItem icon={faList} label="Análises" route="/analysis" />
+      <MenuItem icon={faChartBar} label="Escalas" route="/scale" />
+      <MenuItem icon={faCircleInfo} label="Suporte e Ajuda" route="/help" />
+      <MenuItem icon={faArrowRightFromBracket} label="Sair" route="/logout" />
 
       <View style={styles.imageContainer}>
         <Image source={require('../../assets/logo.png')} style={styles.image} />

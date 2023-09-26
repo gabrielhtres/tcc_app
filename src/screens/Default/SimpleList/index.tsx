@@ -33,11 +33,15 @@ function DefaultSimpleListScreen({ list, viewScreen, navigation }: Props) {
     navigation.navigate(viewScreen, { viewId: id });
   };
 
+  const handleViewMenu = () => {
+    setShowMenu(!showMenu);
+  };
+
   return (
     <>
       <GestureHandlerRootView
         style={{ backgroundColor: theme.colors.background }}>
-        {showMenu && <Menu />}
+        {showMenu && <Menu handleViewMenu={handleViewMenu} />}
 
         <Header screenTitle={screenTitle} setShowMenu={setShowMenu} />
 

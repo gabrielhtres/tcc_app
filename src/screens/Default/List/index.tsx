@@ -76,6 +76,10 @@ function DefaultListScreen({
     navigation.navigate(childrenListScreen);
   };
 
+  const handleViewMenu = () => {
+    setShowMenu(!showMenu);
+  };
+
   // const handleAdd = (id: number) => {
   //   navigation.navigate(addEditScreen, { isView: false, parentId: id });
   // }
@@ -84,7 +88,7 @@ function DefaultListScreen({
     <>
       <GestureHandlerRootView
         style={{ backgroundColor: theme.colors.background }}>
-        {showMenu && <Menu />}
+        {showMenu && <Menu handleViewMenu={handleViewMenu} />}
 
         <Header screenTitle={screenTitle} setShowMenu={setShowMenu} />
 

@@ -1,6 +1,6 @@
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { View, TouchableHighlight } from 'react-native';
+import { Dimensions, View, TouchableHighlight } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import styles from './styles';
 import { MyTheme } from '../../../../App';
@@ -13,10 +13,20 @@ interface Props {
 
 function MenuItem({ icon, label, route }: Props) {
   const theme: MyTheme = useTheme();
+  const { fontScale } = Dimensions.get('window');
+
+  const handleLogout = () => {
+    // navigation.navigate('SignIn');
+  };
 
   return (
     <TouchableHighlight
-      onPress={() => console.log(route)}
+      onPress={() => {
+        if (route === '/logout') {
+          handleLogout();
+          return;
+        }
+      }}
       underlayColor={theme.colors.tertiary}>
       <View
         // eslint-disable-next-line react-native/no-inline-styles
@@ -28,7 +38,7 @@ function MenuItem({ icon, label, route }: Props) {
           icon={icon}
           style={styles.icon}
           color="#FFF"
-          size={20}
+          size={fontScale * 20}
         />
         <Text
           style={{

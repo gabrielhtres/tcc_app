@@ -7,7 +7,7 @@ const getToken = async () => {
 };
 
 const api = axios.create({
-  baseURL: 'http://192.168.0.105:3030',
+  baseURL: 'http://192.168.0.102:3030',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',

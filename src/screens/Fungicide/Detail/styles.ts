@@ -4,7 +4,7 @@ const { height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: height * 0.42,
+    marginBottom: height * 0.37,
   },
   title: {
     fontSize: 20,

@@ -19,9 +19,13 @@ function DefaultAddEditScreen({ fields }: Props) {
   const screenTitle = useSelector((state: any) => state.tab.title);
   const [showMenu, setShowMenu] = useState(false);
 
+  const handleViewMenu = () => {
+    setShowMenu(!showMenu);
+  };
+
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background }}>
-      {showMenu && <Menu />}
+      {showMenu && <Menu handleViewMenu={handleViewMenu} />}
 
       <Header screenTitle={screenTitle} setShowMenu={setShowMenu} />
 

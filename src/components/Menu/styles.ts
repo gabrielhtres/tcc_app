@@ -27,6 +27,11 @@ const styles = StyleSheet.create({
     height: height * 0.12,
     marginBottom: height * 0.02,
   },
+  closeIcon: {
+    position: 'absolute',
+    right: width * 0.06,
+    top: height * 0.025,
+  },
 });
 
 export default styles;
