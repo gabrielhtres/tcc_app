@@ -51,6 +51,7 @@ function AddEditAnalysis({ navigation }: Props) {
   return (
     <>
       <DefaultAddEditScreen
+        navigation={navigation}
         fields={
           <>
             <TextInput

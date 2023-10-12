@@ -4,19 +4,25 @@ import { Dimensions, View, TouchableHighlight } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import styles from './styles';
 import { MyTheme } from '../../../../App';
+import api from '../../../utils/api';
+import { removeStorageData } from '../../../utils/storageService';
 
 interface Props {
   icon: IconDefinition;
   label: string;
   route: string;
+  navigation: any;
 }
 
-function MenuItem({ icon, label, route }: Props) {
+function MenuItem({ icon, label, route, navigation }: Props) {
   const theme: MyTheme = useTheme();
   const { fontScale } = Dimensions.get('window');
 
   const handleLogout = () => {
-    // navigation.navigate('SignIn');
+    api.post('/user/logout').then(() => {
+      removeStorageData('token');
+      navigation.replace('SignIn');
+    });
   };
 
   return (

@@ -88,7 +88,9 @@ function DefaultListScreen({
     <>
       <GestureHandlerRootView
         style={{ backgroundColor: theme.colors.background }}>
-        {showMenu && <Menu handleViewMenu={handleViewMenu} />}
+        {showMenu && (
+          <Menu handleViewMenu={handleViewMenu} navigation={navigation} />
+        )}
 
         <Header screenTitle={screenTitle} setShowMenu={setShowMenu} />
 

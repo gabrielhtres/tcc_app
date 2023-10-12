@@ -10,9 +10,10 @@ import { useSelector } from 'react-redux';
 
 interface Props {
   fields: JSX.Element;
+  navigation: any;
 }
 
-function DefaultAddEditScreen({ fields }: Props) {
+function DefaultAddEditScreen({ fields, navigation }: Props) {
   // const { width, height } = Dimensions.get('window');
   const theme: MyTheme = useTheme();
   const menuTitle = useSelector((state: any) => state.header.title);
@@ -25,7 +26,9 @@ function DefaultAddEditScreen({ fields }: Props) {
 
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background }}>
-      {showMenu && <Menu handleViewMenu={handleViewMenu} />}
+      {showMenu && (
+        <Menu handleViewMenu={handleViewMenu} navigation={navigation} />
+      )}
 
       <Header screenTitle={screenTitle} setShowMenu={setShowMenu} />
 
