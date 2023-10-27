@@ -37,7 +37,7 @@ function ListItem({
 }: Props) {
   const { width } = Dimensions.get('window');
   const theme: MyTheme = useTheme();
-  console.log('defaultId', defaultId);
+  // console.log('defaultId', defaultId);
 
   const icons = {
     1: (

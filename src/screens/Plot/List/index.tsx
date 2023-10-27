@@ -18,7 +18,7 @@ function ListPlot({ navigation }: Props) {
 
   const dispatch = useDispatch();
   const analysis = useSelector((state: any) => state.parent.parents.analysis);
-  console.log('analysis', analysis);
+  // console.log('analysis', analysis);
 
   const getPlotList = async () => {
     const res = await api.get(`/plot/list/${analysis.id}`);

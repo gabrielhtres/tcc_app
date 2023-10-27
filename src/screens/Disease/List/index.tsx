@@ -18,7 +18,7 @@ function ListDisease({ navigation }: Props) {
 
   const dispatch = useDispatch();
   const phase = useSelector((state: any) => state.parent.parents.phase);
-  console.log('phase', phase);
+  // console.log('phase', phase);
 
   const getDiseaseList = async () => {
     const res = await api.get(`/disease/list/${phase.id}`);

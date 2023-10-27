@@ -18,7 +18,7 @@ function ListPhase({ navigation }: Props) {
 
   const dispatch = useDispatch();
   const plot = useSelector((state: any) => state.parent.parents.plot);
-  console.log('plot', plot);
+  // console.log('plot', plot);
 
   const getPhaseList = async () => {
     const res = await api.get(`/phase/list/${plot.id}`);

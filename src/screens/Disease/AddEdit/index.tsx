@@ -62,16 +62,16 @@ function AddEditDisease({ navigation }: Props) {
   const { isView, editId } = route.params as any;
 
   useEffect(() => {
-    console.log('entrou nesse ue');
+    // console.log('entrou nesse ue');
 
     if (!editId) {
       return;
     }
 
-    console.log('editId', editId);
+    // console.log('editId', editId);
 
     api.get(`/disease/${editId}`).then(res => {
-      console.log('data get', res.data.hasIncidence);
+      // console.log('data get', res.data.hasIncidence);
       const defaultDisease = defaultDiseaseList.find(item => {
         return item.id === res.data.defaultDiseaseId;
       });

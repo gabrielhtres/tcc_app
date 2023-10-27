@@ -22,9 +22,9 @@ function ListFungicide({ navigation }: Props) {
   );
 
   const getFungicideList = async () => {
-    console.log('id', defaultDisease.id);
+    // console.log('id', defaultDisease.id);
     const res = await api.get(`/fungicide/list-select/${defaultDisease.id}`);
-    console.log('res', res.data[0]);
+    // console.log('res', res.data[0]);
     setFungicideList(res.data || []);
     setLoading(false);
   };
@@ -52,7 +52,7 @@ function ListFungicide({ navigation }: Props) {
     <>
       <DefaultSimpleListScreen
         list={fungicideList.map(item => {
-          console.log('item', item.id, item.tradeMark);
+          // console.log('item', item.id, item.tradeMark);
           return {
             ...item,
             name: item.tradeMark,

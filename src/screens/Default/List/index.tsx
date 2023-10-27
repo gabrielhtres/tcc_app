@@ -62,7 +62,7 @@ function DefaultListScreen({
   };
 
   const handleList = (id: number, name: string) => {
-    console.log('handle List', id, name);
+    // console.log('handle List', id, name);
 
     dispatch(
       setParent({

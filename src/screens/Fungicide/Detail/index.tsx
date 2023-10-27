@@ -55,12 +55,12 @@ function DetailFungicide() {
       return;
     }
 
-    console.log('veio até aq');
+    // console.log('veio até aq');
 
     api
       .get(`/fungicide/${viewId}`)
       .then(res => {
-        console.log('res', res.data);
+        // console.log('res', res.data);
         setFungicide(res.data);
       })
       .finally(() => setLoading(false));
