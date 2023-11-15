@@ -17,7 +17,7 @@ interface Props {
   list: any[];
   viewScreen: string;
   navigation: any;
-  parentName: 'analysis' | 'plot' | 'phase' | 'disease';
+  parentName?: 'analysis' | 'plot' | 'phase' | 'disease';
 }
 
 function DefaultSimpleListScreen({ list, viewScreen, navigation }: Props) {

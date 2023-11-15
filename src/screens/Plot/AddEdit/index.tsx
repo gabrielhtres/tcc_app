@@ -14,16 +14,16 @@ interface Props {
 interface FormType {
   name: string;
   description: string;
-  xCoordinate?: number;
-  yCoordinate?: number;
+  xCoordinate: string;
+  yCoordinate: string;
 }
 
 function AddEditPlot({ navigation }: Props) {
   const [fieldValues, setFieldValues] = useState<FormType>({
     name: '',
     description: '',
-    xCoordinate: undefined,
-    yCoordinate: undefined,
+    xCoordinate: '',
+    yCoordinate: '',
   });
 
   const route = useRoute();
@@ -32,6 +32,7 @@ function AddEditPlot({ navigation }: Props) {
   const { isView, editId } = route.params as any;
 
   useEffect(() => {
+    console.log('editId', editId);
     if (!editId) {
       return;
     }
@@ -86,10 +87,9 @@ function AddEditPlot({ navigation }: Props) {
               mode="outlined"
               label="Coordenada X"
               style={styles.input}
-              keyboardType="numeric"
               value={fieldValues.xCoordinate?.toString()}
               onChangeText={text => {
-                setFieldValues({ ...fieldValues, xCoordinate: Number(text) });
+                setFieldValues({ ...fieldValues, xCoordinate: text });
               }}
             />
             <TextInput
@@ -97,10 +97,9 @@ function AddEditPlot({ navigation }: Props) {
               mode="outlined"
               label="Coordenada Y"
               style={styles.input}
-              keyboardType="numeric"
               value={fieldValues.yCoordinate?.toString()}
               onChangeText={text => {
-                setFieldValues({ ...fieldValues, yCoordinate: Number(text) });
+                setFieldValues({ ...fieldValues, yCoordinate: text });
               }}
             />
           </>

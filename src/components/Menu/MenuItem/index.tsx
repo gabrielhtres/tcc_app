@@ -32,6 +32,11 @@ function MenuItem({ icon, label, route, navigation }: Props) {
           handleLogout();
           return;
         }
+
+        if (route === '/scale') {
+          navigation.navigate('ListScale');
+          return;
+        }
       }}
       underlayColor={theme.colors.tertiary}>
       <View
