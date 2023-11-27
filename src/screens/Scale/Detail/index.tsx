@@ -9,6 +9,7 @@ import {
   ScrollView,
 } from 'react-native-gesture-handler';
 import styles from './styles';
+import Loader from '../../../components/Loader';
 
 interface Props {
   navigation: any;
@@ -31,6 +32,7 @@ async function getImageSizeAsync(uri: string): Promise<number[]> {
 function DetailScale({ navigation }: Props) {
   const [partsList, setPartsList] = useState<any[]>([]);
   const [imageSizes, setImageSizes] = useState<{ [key: string]: number[] }>({});
+  const [loading, setLoading] = useState<boolean>(true);
 
   const theme = useTheme();
   const route = useRoute();
@@ -41,6 +43,7 @@ function DetailScale({ navigation }: Props) {
     console.log('viewId', viewId);
     api.get(`/scale/part/list/${viewId}`).then(res => {
       setPartsList(res.data || []);
+      setLoading(false);
     });
   }, [viewId]);
 
@@ -67,7 +70,9 @@ function DetailScale({ navigation }: Props) {
     fetchImageSizes();
   }, [partsList]);
 
-  return (
+  return loading ? (
+    <Loader />
+  ) : (
     <DefaultDetailScreen
       fields={
         <GestureHandlerRootView>
