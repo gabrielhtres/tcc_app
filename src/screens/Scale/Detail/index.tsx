@@ -11,10 +11,6 @@ import {
 import styles from './styles';
 import Loader from '../../../components/Loader';
 
-interface Props {
-  navigation: any;
-}
-
 async function getImageSizeAsync(uri: string): Promise<number[]> {
   return new Promise((resolve, reject) => {
     Image.getSize(
@@ -29,7 +25,7 @@ async function getImageSizeAsync(uri: string): Promise<number[]> {
   });
 }
 
-function DetailScale({ navigation }: Props) {
+function DetailScale() {
   const [partsList, setPartsList] = useState<any[]>([]);
   const [imageSizes, setImageSizes] = useState<{ [key: string]: number[] }>({});
   const [loading, setLoading] = useState<boolean>(true);

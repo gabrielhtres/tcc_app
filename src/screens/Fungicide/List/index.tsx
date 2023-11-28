@@ -5,18 +5,15 @@ import validateUser from '../../../utils/validateUser';
 import { useDispatch, useSelector } from 'react-redux';
 import { setHeaderTitle } from '../../../store/slices/headerSlice';
 import { setTabTitle } from '../../../store/slices/tabSlice';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import DefaultSimpleListScreen from '../../Default/SimpleList';
 
-interface Props {
-  navigation: any;
-}
-
-function ListFungicide({ navigation }: Props) {
+function ListFungicide() {
   const [fungicideList, setFungicideList] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const defaultDisease = useSelector(
     (state: any) => state.parent.parents.disease,
   );
@@ -58,7 +55,6 @@ function ListFungicide({ navigation }: Props) {
             name: item.tradeMark,
           };
         })}
-        navigation={navigation}
         parentName="disease"
         viewScreen="DetailFungicide"
       />

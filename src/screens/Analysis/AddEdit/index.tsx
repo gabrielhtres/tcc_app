@@ -1,27 +1,28 @@
 import DefaultAddEditScreen from '../../Default/AddEdit';
 import { TextInput } from 'react-native-paper';
 import { useEffect, useState } from 'react';
-import { CommonActions, useRoute } from '@react-navigation/native';
+import {
+  CommonActions,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import styles from './styles';
 import DefaultFloatButton from '../../../components/DefaultFloatButton';
 import api from '../../../utils/api';
-
-interface Props {
-  navigation: any;
-}
 
 interface FormType {
   name: string;
   description: string;
 }
 
-function AddEditAnalysis({ navigation }: Props) {
+function AddEditAnalysis() {
   const [fieldValues, setFieldValues] = useState<FormType>({
     name: '',
     description: '',
   });
 
   const route = useRoute();
+  const navigation = useNavigation();
 
   const { isView, editId } = route.params as any;
 
@@ -51,7 +52,6 @@ function AddEditAnalysis({ navigation }: Props) {
   return (
     <>
       <DefaultAddEditScreen
-        navigation={navigation}
         fields={
           <>
             <TextInput

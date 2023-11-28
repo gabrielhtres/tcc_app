@@ -1,6 +1,10 @@
 import DefaultAddEditScreen from '../../Default/AddEdit';
 import { useEffect, useState } from 'react';
-import { CommonActions, useRoute } from '@react-navigation/native';
+import {
+  CommonActions,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import DefaultFloatButton from '../../../components/DefaultFloatButton';
 import api from '../../../utils/api';
 import { useSelector } from 'react-redux';
@@ -31,17 +35,13 @@ interface DefaultDiseaseType {
   control: string;
 }
 
-interface Props {
-  navigation: any;
-}
-
 interface FormType {
   defaultDiseaseId?: number;
   percentage: number;
   hasIncidence: boolean;
 }
 
-function AddEditDisease({ navigation }: Props) {
+function AddEditDisease() {
   const [defaultDiseaseList, setDefaultDiseaseList] = useState<
     DefaultDiseaseType[]
   >([]);
@@ -56,6 +56,7 @@ function AddEditDisease({ navigation }: Props) {
   });
 
   const route = useRoute();
+  const navigation = useNavigation();
   const phase = useSelector((state: any) => state.parent.parents.phase);
   const theme: MyTheme = useTheme();
 

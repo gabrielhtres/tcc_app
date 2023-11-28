@@ -6,12 +6,13 @@ import validateUser from '../../../utils/validateUser';
 import { useDispatch } from 'react-redux';
 import { setHeaderTitle } from '../../../store/slices/headerSlice';
 import { setTabTitle } from '../../../store/slices/tabSlice';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
-function ListAnalysis({ navigation }: any) {
+function ListAnalysis() {
   const [analysisList, setAnalysisList] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const getAnalysisList = async () => {
     const res = await api.get('/analysis/list');
@@ -44,7 +45,6 @@ function ListAnalysis({ navigation }: any) {
         apiRoute="/analysis"
         childrenListScreen="ListPlot"
         parentName="analysis"
-        navigation={navigation}
         removeFunction={handleRemove}
       />
     </>

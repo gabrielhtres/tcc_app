@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import api from '../../../utils/api';
 import { setParent } from '../../../store/slices/parentSlice';
 import { setHeaderTitle } from '../../../store/slices/headerSlice';
+import { useNavigation } from '@react-navigation/native';
 
 interface Props {
   list: any[];
@@ -22,7 +23,6 @@ interface Props {
   listScreen: string;
   childrenListScreen: string;
   apiRoute: string;
-  navigation: any;
   parentName: 'analysis' | 'plot' | 'phase' | 'disease';
   removeFunction: () => void;
   simpleList?: boolean;
@@ -34,17 +34,16 @@ function DefaultListScreen({
   addEditScreen,
   childrenListScreen,
   apiRoute,
-  navigation,
   parentName,
   removeFunction,
 }: Props) {
-  const [showMenu, setShowMenu] = useState(false);
-
   const theme: MyTheme = useTheme();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const screenTitle = useSelector((state: any) => state.tab.title);
   const menuTitle = useSelector((state: any) => state.header.title);
   const parents = useSelector((state: any) => state.parent.parents);
+  const showMenu = useSelector((state: any) => state.menu.show);
 
   const handleEdit = (id: number, name: string) => {
     dispatch(setHeaderTitle(`Editar ${name}`));
@@ -76,10 +75,6 @@ function DefaultListScreen({
     navigation.navigate(childrenListScreen);
   };
 
-  const handleViewMenu = () => {
-    setShowMenu(!showMenu);
-  };
-
   // const handleAdd = (id: number) => {
   //   navigation.navigate(addEditScreen, { isView: false, parentId: id });
   // }
@@ -88,11 +83,9 @@ function DefaultListScreen({
     <>
       <GestureHandlerRootView
         style={{ backgroundColor: theme.colors.background }}>
-        {showMenu && (
-          <Menu handleViewMenu={handleViewMenu} navigation={navigation} />
-        )}
+        {showMenu && <Menu />}
 
-        <Header screenTitle={screenTitle} setShowMenu={setShowMenu} />
+        <Header screenTitle={screenTitle} />
 
         <Text
           style={{ ...styles.title, backgroundColor: theme.colors.background }}>

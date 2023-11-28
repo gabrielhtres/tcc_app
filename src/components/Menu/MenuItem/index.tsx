@@ -6,16 +6,20 @@ import styles from './styles';
 import { MyTheme } from '../../../../App';
 import api from '../../../utils/api';
 import { removeStorageData } from '../../../utils/storageService';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { setMenuVisible } from '../../../store/slices/menuSlice';
 
 interface Props {
   icon: IconDefinition;
   label: string;
   route: string;
-  navigation: any;
 }
 
-function MenuItem({ icon, label, route, navigation }: Props) {
+function MenuItem({ icon, label, route }: Props) {
   const theme: MyTheme = useTheme();
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
   const { fontScale } = Dimensions.get('window');
 
   const handleLogout = () => {
@@ -33,8 +37,15 @@ function MenuItem({ icon, label, route, navigation }: Props) {
           return;
         }
 
+        dispatch(setMenuVisible(false));
+
         if (route === '/scale') {
           navigation.navigate('ListScale');
+          return;
+        }
+
+        if (route === '/analysis') {
+          navigation.navigate('ListAnalysis');
           return;
         }
       }}

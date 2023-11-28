@@ -1,15 +1,15 @@
 import DefaultAddEditScreen from '../../Default/AddEdit';
 import { TextInput } from 'react-native-paper';
 import { useEffect, useState } from 'react';
-import { CommonActions, useRoute } from '@react-navigation/native';
+import {
+  CommonActions,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import DefaultFloatButton from '../../../components/DefaultFloatButton';
 import api from '../../../utils/api';
 import styles from './styles';
 import { useSelector } from 'react-redux';
-
-interface Props {
-  navigation: any;
-}
 
 interface FormType {
   name: string;
@@ -18,7 +18,7 @@ interface FormType {
   yCoordinate: string;
 }
 
-function AddEditPlot({ navigation }: Props) {
+function AddEditPlot() {
   const [fieldValues, setFieldValues] = useState<FormType>({
     name: '',
     description: '',
@@ -27,6 +27,7 @@ function AddEditPlot({ navigation }: Props) {
   });
 
   const route = useRoute();
+  const navigation = useNavigation();
   const analysis = useSelector((state: any) => state.parent.parents.analysis);
 
   const { isView, editId } = route.params as any;

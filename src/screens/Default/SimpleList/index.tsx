@@ -12,38 +12,34 @@ import {
 import { MyTheme } from '../../../../App';
 import { useDispatch, useSelector } from 'react-redux';
 import { setHeaderTitle } from '../../../store/slices/headerSlice';
+import { useNavigation } from '@react-navigation/native';
 
 interface Props {
   list: any[];
   viewScreen: string;
-  navigation: any;
   parentName?: 'analysis' | 'plot' | 'phase' | 'disease';
 }
 
-function DefaultSimpleListScreen({ list, viewScreen, navigation }: Props) {
-  const [showMenu, setShowMenu] = useState(false);
-
+function DefaultSimpleListScreen({ list, viewScreen }: Props) {
   const theme: MyTheme = useTheme();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const screenTitle = useSelector((state: any) => state.tab.title);
   const menuTitle = useSelector((state: any) => state.header.title);
+  const showMenu = useSelector((state: any) => state.menu.show);
 
   const handleView = (id: number, name: string) => {
     dispatch(setHeaderTitle(`Visualizar ${name}`));
     navigation.navigate(viewScreen, { viewId: id });
   };
 
-  const handleViewMenu = () => {
-    setShowMenu(!showMenu);
-  };
-
   return (
     <>
       <GestureHandlerRootView
         style={{ backgroundColor: theme.colors.background }}>
-        {showMenu && <Menu handleViewMenu={handleViewMenu} />}
+        {showMenu && <Menu />}
 
-        <Header screenTitle={screenTitle} setShowMenu={setShowMenu} />
+        <Header screenTitle={screenTitle} />
 
         <Text
           style={{ ...styles.title, backgroundColor: theme.colors.background }}>

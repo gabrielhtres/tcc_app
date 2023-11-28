@@ -14,12 +14,9 @@ import { useDispatch } from 'react-redux';
 import { setUserData } from '../../store/slices/userSlice';
 import { setTabTitle } from '../../store/slices/tabSlice';
 import { setHeaderTitle } from '../../store/slices/headerSlice';
+import { useNavigation } from '@react-navigation/native';
 
-interface Props {
-  navigation: any;
-}
-
-function SignIn({ navigation }: Props) {
+function SignIn() {
   const theme: MyTheme = useTheme();
   const [cpf, setCpf] = useState<string>('');
   const [cpfError, setCpfError] = useState<boolean>(false);
@@ -28,6 +25,7 @@ function SignIn({ navigation }: Props) {
   // const [hidePassword, setHideassword] = useState<boolean>(false);
 
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const makeSignIn = () => {
     api

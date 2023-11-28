@@ -2,21 +2,18 @@ import api from '../../../utils/api';
 import { useCallback, useState } from 'react';
 import Loader from '../../../components/Loader';
 import validateUser from '../../../utils/validateUser';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setHeaderTitle } from '../../../store/slices/headerSlice';
 import { setTabTitle } from '../../../store/slices/tabSlice';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import DefaultSimpleListScreen from '../../Default/SimpleList';
 
-interface Props {
-  navigation: any;
-}
-
-function ListScale({ navigation }: Props) {
+function ListScale() {
   const [scaleList, setScaleList] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const getFungicideList = async () => {
     const res = await api.get('/scale/list');
@@ -38,11 +35,7 @@ function ListScale({ navigation }: Props) {
     <Loader />
   ) : (
     <>
-      <DefaultSimpleListScreen
-        list={scaleList}
-        navigation={navigation}
-        viewScreen="DetailScale"
-      />
+      <DefaultSimpleListScreen list={scaleList} viewScreen="DetailScale" />
     </>
   );
 }

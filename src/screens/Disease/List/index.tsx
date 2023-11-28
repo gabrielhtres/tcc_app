@@ -6,17 +6,14 @@ import validateUser from '../../../utils/validateUser';
 import { useDispatch, useSelector } from 'react-redux';
 import { setHeaderTitle } from '../../../store/slices/headerSlice';
 import { setTabTitle } from '../../../store/slices/tabSlice';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
-interface Props {
-  navigation: any;
-}
-
-function ListDisease({ navigation }: Props) {
+function ListDisease() {
   const [diseaseList, setDiseaseList] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const phase = useSelector((state: any) => state.parent.parents.phase);
   // console.log('phase', phase);
 
@@ -56,7 +53,6 @@ function ListDisease({ navigation }: Props) {
         addEditScreen="AddEditDisease"
         listScreen="ListDisease"
         apiRoute="/disease"
-        navigation={navigation}
         childrenListScreen="ListFungicide"
         parentName="disease"
         removeFunction={handleRemove}

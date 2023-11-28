@@ -8,23 +8,22 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import styles from './styles';
 import { MyTheme } from '../../../App';
+import { useDispatch } from 'react-redux';
+import { setMenuVisible } from '../../store/slices/menuSlice';
 
 interface Props {
   screenTitle: string;
-  setShowMenu: (showMenu: boolean) => void;
 }
 
-function Header({ screenTitle, setShowMenu }: Props) {
+function Header({ screenTitle }: Props) {
   const theme: MyTheme = useTheme();
+  const dispatch = useDispatch();
 
   return (
     <Appbar.Header
       mode="small"
       style={{ ...styles.header, backgroundColor: theme.colors.primary }}>
-      <TouchableOpacity
-        onPress={() => {
-          setShowMenu(true);
-        }}>
+      <TouchableOpacity onPress={() => dispatch(setMenuVisible(true))}>
         <FontAwesomeIcon
           size={20}
           icon={faBars}
@@ -39,10 +38,7 @@ function Header({ screenTitle, setShowMenu }: Props) {
         style={styles.favoriteIcon}
         color={theme.colors.primaryText}
       />
-      <TouchableOpacity
-        onPress={() => {
-          setShowMenu(false);
-        }}>
+      <TouchableOpacity>
         <FontAwesomeIcon
           size={20}
           icon={faMagnifyingGlass}

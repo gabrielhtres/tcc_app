@@ -11,10 +11,6 @@ import {
   ScrollView,
 } from 'react-native-gesture-handler';
 
-// interface Props {
-//   navigation: any;
-// }
-
 interface RouteProps {
   viewId: number;
 }

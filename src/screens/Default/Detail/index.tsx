@@ -7,30 +7,24 @@ import { View } from 'react-native';
 import styles from './styles';
 import { MyTheme } from '../../../../App';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 interface Props {
   fields: JSX.Element;
-  navigation: any;
 }
 
-function DefaultDetailScreen({ fields, navigation }: Props) {
+function DefaultDetailScreen({ fields }: Props) {
   // const { width, height } = Dimensions.get('window');
   const theme: MyTheme = useTheme();
   const menuTitle = useSelector((state: any) => state.header.title);
   const screenTitle = useSelector((state: any) => state.tab.title);
-  const [showMenu, setShowMenu] = useState(false);
-
-  const handleViewMenu = () => {
-    setShowMenu(!showMenu);
-  };
+  const showMenu = useSelector((state: any) => state.menu.show);
 
   return (
     <SafeAreaView style={{ backgroundColor: theme.colors.background }}>
-      {showMenu && (
-        <Menu handleViewMenu={handleViewMenu} navigation={navigation} />
-      )}
+      {showMenu && <Menu />}
 
-      <Header screenTitle={screenTitle} setShowMenu={setShowMenu} />
+      <Header screenTitle={screenTitle} />
 
       <Text style={styles.title}>{menuTitle}</Text>
 

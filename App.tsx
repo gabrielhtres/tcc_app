@@ -67,8 +67,8 @@ function App(): JSX.Element {
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <PaperProvider theme={theme}>
+      <PaperProvider theme={theme}>
+        <NavigationContainer>
           <Stack.Navigator initialRouteName="ListAnalysis">
             <Stack.Screen
               name="SignIn"
@@ -141,8 +141,8 @@ function App(): JSX.Element {
               options={{ headerShown: false, freezeOnBlur: false }}
             />
           </Stack.Navigator>
-        </PaperProvider>
-      </NavigationContainer>
+        </NavigationContainer>
+      </PaperProvider>
     </Provider>
   );
 }

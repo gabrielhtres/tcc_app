@@ -6,17 +6,14 @@ import validateUser from '../../../utils/validateUser';
 import { useDispatch, useSelector } from 'react-redux';
 import { setHeaderTitle } from '../../../store/slices/headerSlice';
 import { setTabTitle } from '../../../store/slices/tabSlice';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
-interface Props {
-  navigation: any;
-}
-
-function ListPlot({ navigation }: Props) {
+function ListPlot() {
   const [plotList, setPlotList] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const analysis = useSelector((state: any) => state.parent.parents.analysis);
   // console.log('analysis', analysis);
 
@@ -50,7 +47,6 @@ function ListPlot({ navigation }: Props) {
         addEditScreen="AddEditPlot"
         listScreen="ListPlot"
         apiRoute="/plot"
-        navigation={navigation}
         childrenListScreen="ListPhase"
         parentName="plot"
         removeFunction={handleRemove}

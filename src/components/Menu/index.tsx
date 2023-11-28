@@ -16,15 +16,18 @@ import {
   TouchableOpacity,
 } from 'react-native-gesture-handler';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { useDispatch } from 'react-redux';
+import { setMenuVisible } from '../../store/slices/menuSlice';
 
-interface Props {
-  handleViewMenu: () => void;
-  navigation: any;
-}
-
-function Menu({ handleViewMenu, navigation }: Props) {
+function Menu() {
   const theme: MyTheme = useTheme();
   const { fontScale } = Dimensions.get('window');
+
+  const dispatch = useDispatch();
+
+  const handleCloseMenu = () => {
+    dispatch(setMenuVisible(false));
+  };
 
   return (
     <View
@@ -48,7 +51,7 @@ function Menu({ handleViewMenu, navigation }: Props) {
           usuario@email.com
         </Text>
         <GestureHandlerRootView style={styles.closeIcon}>
-          <TouchableOpacity onPress={handleViewMenu}>
+          <TouchableOpacity onPress={handleCloseMenu}>
             <FontAwesomeIcon
               icon={faClose}
               size={fontScale * 20}
@@ -57,36 +60,11 @@ function Menu({ handleViewMenu, navigation }: Props) {
           </TouchableOpacity>
         </GestureHandlerRootView>
       </View>
-      <MenuItem
-        icon={faUser}
-        label="Meu Perfil"
-        route="/user"
-        navigation={navigation}
-      />
-      <MenuItem
-        icon={faList}
-        label="Análises"
-        route="/analysis"
-        navigation={navigation}
-      />
-      <MenuItem
-        icon={faChartBar}
-        label="Escalas"
-        route="/scale"
-        navigation={navigation}
-      />
-      <MenuItem
-        icon={faCircleInfo}
-        label="Suporte e Ajuda"
-        route="/help"
-        navigation={navigation}
-      />
-      <MenuItem
-        icon={faArrowRightFromBracket}
-        label="Sair"
-        route="/logout"
-        navigation={navigation}
-      />
+      <MenuItem icon={faUser} label="Meu Perfil" route="/user" />
+      <MenuItem icon={faList} label="Análises" route="/analysis" />
+      <MenuItem icon={faChartBar} label="Escalas" route="/scale" />
+      <MenuItem icon={faCircleInfo} label="Suporte e Ajuda" route="/help" />
+      <MenuItem icon={faArrowRightFromBracket} label="Sair" route="/logout" />
 
       <View style={styles.imageContainer}>
         <Image source={require('../../assets/logo.png')} style={styles.image} />
